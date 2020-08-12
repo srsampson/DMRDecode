@@ -5,7 +5,7 @@ The aim of the project is to provide a user friendly DMR data decoder for hobbyi
 
 It is Java based so should run under Microsoft Windows, Apple and Linux PC's. The only hardware needed will be a radio scanner with a discriminator audio output.
 
-The core of the program is based around the open source DSD program. That program was written in C and ran under Linux only, so it was converted to Java and removed sections that don't relate to DMR.
+The core of the program is based around the open source DSD program. That program was written in C and ran under Linux only, so it was converted to Java and sections removed that didn't relate to DMR.
 
 #### Networking
 The program listens for connections on TCP/IP Port 17887. When a client connects (this can be simulated with the command "telnet 127.0.0.1 17887") the program responds with "OK". Up to 10 clients can be connected.
