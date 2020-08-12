@@ -1,12 +1,16 @@
 #### DMRDecode - DMR Radio Protocol Decoder
-The aim of this project is to provide a user friendly DMR data decoder for hobbyists. It is Java based so should run under Microsoft Windows , Apple and Linux PC's. The only hardware needed will be a radio scanner with a discriminator audio output.
+Original Java program written by Ian Wraith, and I have imported that into Netbeans and produced this Repository with the executable JAR file.
 
-The core of the program is based around the open source DSD program by an unknown author. This program was written in C and runs under Linux only so my first job was to convert that code to Java and remove all sections that don't relate to DMR.
+The aim of the project is to provide a user friendly DMR data decoder for hobbyists.
+
+It is Java based so should run under Microsoft Windows, Apple and Linux PC's. The only hardware needed will be a radio scanner with a discriminator audio output.
+
+The core of the program is based around the open source DSD program. That program was written in C and ran under Linux only, so it was converted to Java and removed sections that don't relate to DMR.
 
 #### Networking
-When started the program listens for connections on TCP/IP Port 17887. When a client connects (this can be simulated with the command "telnet 127.0.0.1 17887") the program responds with "OK".
+The program listens for connections on TCP/IP Port 17887. When a client connects (this can be simulated with the command "telnet 127.0.0.1 17887") the program responds with "OK". Up to 10 clients can be connected.
 
-Following that on receiving a voice frame the program sends the following information to each connected client ..
+Following that, on receiving a voice frame the program sends the following information to each connected client ..
 
 "#" - The # character is sent to indicate the start of a voice frame
 
@@ -14,22 +18,20 @@ C - A integer 1 or a 2 is sent to indicate which channel this frame is from
 
 Followed by 27 integers which contain the 216 bits that make up a voice frame. Each integer contains 8 bits.
 
-Up to 10 clients can be connected to each program.
-
 #### Decode
 DMR data is arranged into frames each consisting of 264 bits. There are three types of frame ..
 
-Voice frame. As it suggests this contains digitised voice data in two 108 bit sections separated by a 48 bit synchronisation sequence which identifies as the frame as being a voice one. As yet the program does nothing with voice frames other than displaying their presence.
+Voice frame. As it suggests, this contains digitized voice data in two 108 bit sections separated by a 48 bit synchronization sequence which identifies as the frame as being a voice one. As yet the program does nothing with voice frames other than displaying their presence.
 
-Data frame. These contain signalling information which is required for call set up. The frames consist of two 98 bit sections which contain the main signalling payload (which the program doesn't yet decode) plus a 48 bit synchronisation sequence which identifies the frame and a 20 bit SLOT TYPE section. The SLOT TYPE section of the frame is decoded by the program. A decoded example would be ..
+Data frame. These contain signalling information which is required for call set up. The frames consist of two 98 bit sections which contain the main signalling payload (which the program doesn't yet decode) plus a 48 bit synchronization sequence which identifies the frame and a 20 bit SLOT TYPE section. The SLOT TYPE section of the frame is decoded by the program. A decoded example would be ..
 
 #### Slot Type : Color Code 2 CSBK
 
 Where you see the systems color code (actually a number between 0 and 15) and what kind of information is being sent in the main signalling payload of the frame (in this case CSBK data).
 
-Embedded frame. These frames don't contain any synchronisation bits but instead carry embedded signalling in its place (which isn't currently decoded) they also contain either voice or signalling data in their main payload. The signalling data variety contain a SLOT TYPE section which is decoded (see point 2) while the voice variety contains a EMB field which is decoded as shown below ..
+Embedded frame. These frames don't contain any synchronization bits but instead carry embedded signalling in its place (which isn't currently decoded) they also contain either voice or signalling data in their main payload. The signalling data variety contain a SLOT TYPE section which is decoded (see point 2) while the voice variety contains a EMB field which is decoded as shown below ..
 
-#### EMB : Colour Code 2 : First fragment of LC
+#### EMB : Color Code 2 : First fragment of LC
 
 Again we see the systems color code and what type of information is contained in the embedded field (in this case the first fragment of an LC).
 
