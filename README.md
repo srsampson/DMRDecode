@@ -23,7 +23,7 @@ Voice frame. As it suggests this contains digitised voice data in two 108 bit se
 
 Data frame. These contain signalling information which is required for call set up. The frames consist of two 98 bit sections which contain the main signalling payload (which the program doesn't yet decode) plus a 48 bit synchronisation sequence which identifies the frame and a 20 bit SLOT TYPE section. The SLOT TYPE section of the frame is decoded by the program. A decoded example would be ..
 
-Slot Type : Color Code 2 CSBK
+#### Slot Type : Color Code 2 CSBK
 
 Where you see the systems color code (actually a number between 0 and 15) and what kind of information is being sent in the main signalling payload of the frame (in this case CSBK data).
 
