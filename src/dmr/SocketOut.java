@@ -1,5 +1,6 @@
 package dmr;
 
+import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.net.ServerSocket;
@@ -20,6 +21,7 @@ public class SocketOut implements Runnable {
     }
 
     // Main
+    @Override
     public void run() {
         int next;
         // Run continously
@@ -46,7 +48,7 @@ public class SocketOut implements Runnable {
     public boolean setupSocket() {
         try {
             serversocket = new ServerSocket(PORT);
-        } catch (Exception e) {
+        } catch (IOException e) {
             return false;
         }
         ready = true;
@@ -63,7 +65,7 @@ public class SocketOut implements Runnable {
             // Send "OK" to the connected client
             socketPrintWriter[n].println("OK");
             socketPrintWriter[n].flush();
-        } catch (Exception e) {
+        } catch (IOException e) {
             return;
         }
         socketStatus[n] = true;

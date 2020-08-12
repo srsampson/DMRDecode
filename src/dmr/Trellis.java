@@ -134,21 +134,9 @@ public class Trellis {
         boolean out[] = new boolean[144];
         for (a = 0; a < 144; a = a + 3) {
             // Convert three bits at a time
-            if ((tribit[b] & 4) > 0) {
-                out[a] = true;
-            } else {
-                out[a] = false;
-            }
-            if ((tribit[b] & 2) > 0) {
-                out[a + 1] = true;
-            } else {
-                out[a + 1] = false;
-            }
-            if ((tribit[b] & 1) > 0) {
-                out[a + 2] = true;
-            } else {
-                out[a + 2] = false;
-            }
+            out[a] = (tribit[b] & 4) > 0;
+            out[a + 1] = (tribit[b] & 2) > 0;
+            out[a + 2] = (tribit[b] & 1) > 0;
             // Increment the bit counter
             b++;
         }

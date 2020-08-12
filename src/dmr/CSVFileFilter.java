@@ -4,6 +4,7 @@ import java.io.File;
 
 public class CSVFileFilter extends javax.swing.filechooser.FileFilter {
 
+    @Override
     public boolean accept(File f) {
         // if it is a directory -- we want to show it so return true.
         if (f.isDirectory()) {
@@ -26,6 +27,7 @@ public class CSVFileFilter extends javax.swing.filechooser.FileFilter {
      * Again, this is declared in the abstract class The description of this
      * filter
      */
+    @Override
     public String getDescription() {
         return "CSV files";
     }

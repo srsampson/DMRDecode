@@ -35,18 +35,25 @@ public class DecodeCACH {
         final int[] interleaveCACH = {0, 4, 8, 12, 14, 18, 22, 1, 2, 3, 5, 6, 7, 9, 10, 11, 13, 15, 16, 17, 19, 20, 21, 23};
         // Convert from dibits into boolean
         for (a = 0; a < 12; a++) {
-            if (dibit_buf[a] == 0) {
-                rawdataCACH[r] = false;
-                rawdataCACH[r + 1] = false;
-            } else if (dibit_buf[a] == 1) {
-                rawdataCACH[r] = false;
-                rawdataCACH[r + 1] = true;
-            } else if (dibit_buf[a] == 2) {
-                rawdataCACH[r] = true;
-                rawdataCACH[r + 1] = false;
-            } else if (dibit_buf[a] == 3) {
-                rawdataCACH[r] = true;
-                rawdataCACH[r + 1] = true;
+            switch (dibit_buf[a]) {
+                case 0:
+                    rawdataCACH[r] = false;
+                    rawdataCACH[r + 1] = false;
+                    break;
+                case 1:
+                    rawdataCACH[r] = false;
+                    rawdataCACH[r + 1] = true;
+                    break;
+                case 2:
+                    rawdataCACH[r] = true;
+                    rawdataCACH[r + 1] = false;
+                    break;
+                case 3:
+                    rawdataCACH[r] = true;
+                    rawdataCACH[r + 1] = true;
+                    break;
+                default:
+                    break;
             }
             r = r + 2;
         }
@@ -104,22 +111,35 @@ public class DecodeCACH {
             line.append(" Ch 2");
             theApp.currentChannel = 2;
         }
-        if (lcss == 0) {
-            line.append(" First fragment of CSBK ");
-        } else if (lcss == 1) {
-            line.append(" First fragment of LC ");
-        } else if (lcss == 2) {
-            line.append(" Last fragment of LC ");
-        } else if (lcss == 3) {
-            line.append(" Continuation fragment of LC ");
+        switch (lcss) {
+            case 0:
+                line.append(" First fragment of CSBK ");
+                break;
+            case 1:
+                line.append(" First fragment of LC ");
+                break;
+            case 2:
+                line.append(" Last fragment of LC ");
+                break;
+            case 3:
+                line.append(" Continuation fragment of LC ");
+                break;
+            default:
+                break;
         }
         // If this is an short LC message pass the data on to the ShortLC object
-        if (lcss == 3) {
-            fragType = 1;
-        } else if (lcss == 2) {
-            fragType = 2;
-        } else if (lcss == 1) {
-            fragType = 0;
+        switch (lcss) {
+            case 3:
+                fragType = 1;
+                break;
+            case 2:
+                fragType = 2;
+                break;
+            case 1:
+                fragType = 0;
+                break;
+            default:
+                break;
         }
         // Below is commented out as the code contains a known bug
         // Also other things need fixing first
@@ -168,26 +188,10 @@ public class DecodeCACH {
         // Run through all possible values
         for (a = 0; a < 16; a++) {
             // Covert from an integer to boolean
-            if ((a & 8) > 0) {
-                d1 = true;
-            } else {
-                d1 = false;
-            }
-            if ((a & 4) > 0) {
-                d2 = true;
-            } else {
-                d2 = false;
-            }
-            if ((a & 2) > 0) {
-                d3 = true;
-            } else {
-                d3 = false;
-            }
-            if ((a & 1) > 0) {
-                d4 = true;
-            } else {
-                d4 = false;
-            }
+            d1 = (a & 8) > 0;
+            d2 = (a & 4) > 0;
+            d3 = (a & 2) > 0;
+            d4 = (a & 1) > 0;
             // Calculate the parity bits
             h2 = d1 ^ d2 ^ d3;
             h1 = d2 ^ d3 ^ d4;

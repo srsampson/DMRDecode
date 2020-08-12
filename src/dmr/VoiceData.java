@@ -1,6 +1,7 @@
 package dmr;
 
 import java.io.FileWriter;
+import java.io.IOException;
 
 public class VoiceData {
 
@@ -22,35 +23,49 @@ public class VoiceData {
         boolean rawData[] = new boolean[216];
         // First block
         for (a = 12; a < 66; a++) {
-            if (dibit_buf[a] == 0) {
-                rawData[r] = false;
-                rawData[r + 1] = false;
-            } else if (dibit_buf[a] == 1) {
-                rawData[r] = false;
-                rawData[r + 1] = true;
-            } else if (dibit_buf[a] == 2) {
-                rawData[r] = true;
-                rawData[r + 1] = false;
-            } else if (dibit_buf[a] == 3) {
-                rawData[r] = true;
-                rawData[r + 1] = true;
+            switch (dibit_buf[a]) {
+                case 0:
+                    rawData[r] = false;
+                    rawData[r + 1] = false;
+                    break;
+                case 1:
+                    rawData[r] = false;
+                    rawData[r + 1] = true;
+                    break;
+                case 2:
+                    rawData[r] = true;
+                    rawData[r + 1] = false;
+                    break;
+                case 3:
+                    rawData[r] = true;
+                    rawData[r + 1] = true;
+                    break;
+                default:
+                    break;
             }
             r = r + 2;
         }
         // Second block
         for (a = 90; a < 144; a++) {
-            if (dibit_buf[a] == 0) {
-                rawData[r] = false;
-                rawData[r + 1] = false;
-            } else if (dibit_buf[a] == 1) {
-                rawData[r] = false;
-                rawData[r + 1] = true;
-            } else if (dibit_buf[a] == 2) {
-                rawData[r] = true;
-                rawData[r + 1] = false;
-            } else if (dibit_buf[a] == 3) {
-                rawData[r] = true;
-                rawData[r + 1] = true;
+            switch (dibit_buf[a]) {
+                case 0:
+                    rawData[r] = false;
+                    rawData[r + 1] = false;
+                    break;
+                case 1:
+                    rawData[r] = false;
+                    rawData[r + 1] = true;
+                    break;
+                case 2:
+                    rawData[r] = true;
+                    rawData[r + 1] = false;
+                    break;
+                case 3:
+                    rawData[r] = true;
+                    rawData[r + 1] = true;
+                    break;
+                default:
+                    break;
             }
             r = r + 2;
         }
@@ -115,7 +130,7 @@ public class VoiceData {
             vfile.write(vline.toString());
             vfile.flush();
             vfile.close();
-        } catch (Exception e) {
+        } catch (IOException e) {
             System.err.println("Error: " + e.getMessage());
         }
     }

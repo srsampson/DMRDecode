@@ -2,9 +2,9 @@ package dmr;
 
 public class BPTC19696 {
 
-    private boolean rawData[] = new boolean[196];
-    private boolean deInterData[] = new boolean[196];
-    private boolean outData[] = new boolean[96];
+    private final boolean rawData[] = new boolean[196];
+    private final boolean deInterData[] = new boolean[196];
+    private final boolean outData[] = new boolean[96];
 
     // The main decode function
     public boolean decode(byte[] dibit_buf) {
@@ -27,35 +27,50 @@ public class BPTC19696 {
         int a, r = 0;
         // First block
         for (a = 12; a < 61; a++) {
-            if (dibit_buf[a] == 0) {
-                rawData[r] = false;
-                rawData[r + 1] = false;
-            } else if (dibit_buf[a] == 1) {
-                rawData[r] = false;
-                rawData[r + 1] = true;
-            } else if (dibit_buf[a] == 2) {
-                rawData[r] = true;
-                rawData[r + 1] = false;
-            } else if (dibit_buf[a] == 3) {
-                rawData[r] = true;
-                rawData[r + 1] = true;
+            switch (dibit_buf[a]) {
+                case 0:
+                    rawData[r] = false;
+                    rawData[r + 1] = false;
+                    break;
+                case 1:
+                    rawData[r] = false;
+                    rawData[r + 1] = true;
+                    break;
+                case 2:
+                    rawData[r] = true;
+                    rawData[r + 1] = false;
+                    break;
+                case 3:
+                    rawData[r] = true;
+                    rawData[r + 1] = true;
+                    break;
+                default:
+                    break;
             }
+            
             r = r + 2;
         }
         // Second block
         for (a = 95; a < 144; a++) {
-            if (dibit_buf[a] == 0) {
-                rawData[r] = false;
-                rawData[r + 1] = false;
-            } else if (dibit_buf[a] == 1) {
-                rawData[r] = false;
-                rawData[r + 1] = true;
-            } else if (dibit_buf[a] == 2) {
-                rawData[r] = true;
-                rawData[r + 1] = false;
-            } else if (dibit_buf[a] == 3) {
-                rawData[r] = true;
-                rawData[r + 1] = true;
+            switch (dibit_buf[a]) {
+                case 0:
+                    rawData[r] = false;
+                    rawData[r + 1] = false;
+                    break;
+                case 1:
+                    rawData[r] = false;
+                    rawData[r + 1] = true;
+                    break;
+                case 2:
+                    rawData[r] = true;
+                    rawData[r + 1] = false;
+                    break;
+                case 3:
+                    rawData[r] = true;
+                    rawData[r + 1] = true;
+                    break;
+                default:
+                    break;
             }
             r = r + 2;
         }
@@ -113,12 +128,9 @@ public class BPTC19696 {
         c[1] = d[1] ^ d[2] ^ d[3] ^ d[4] ^ d[6] ^ d[8] ^ d[9];
         c[2] = d[2] ^ d[3] ^ d[4] ^ d[5] ^ d[7] ^ d[9] ^ d[10];
         c[3] = d[0] ^ d[1] ^ d[2] ^ d[4] ^ d[6] ^ d[7] ^ d[10];
+        
         // Compare these with the actual bits
-        if ((c[0] == d[11]) && (c[1] == d[12]) && (c[2] == d[13]) && (c[3] == d[14])) {
-            return true;
-        } else {
-            return false;
-        }
+        return (c[0] == d[11]) && (c[1] == d[12]) && (c[2] == d[13]) && (c[3] == d[14]);
     }
 
     // Hamming (13,9,3) check a boolean data array
@@ -129,12 +141,9 @@ public class BPTC19696 {
         c[1] = d[0] ^ d[1] ^ d[2] ^ d[4] ^ d[6] ^ d[7];
         c[2] = d[0] ^ d[1] ^ d[2] ^ d[3] ^ d[5] ^ d[7] ^ d[8];
         c[3] = d[0] ^ d[2] ^ d[4] ^ d[5] ^ d[8];
+        
         // Compare these with the actual bits
-        if ((c[0] == d[9]) && (c[1] == d[10]) && (c[2] == d[11]) && (c[3] == d[12])) {
-            return true;
-        } else {
-            return false;
-        }
+        return (c[0] == d[9]) && (c[1] == d[10]) && (c[2] == d[11]) && (c[3] == d[12]);
     }
 
     // Extract the 96 bits of payload

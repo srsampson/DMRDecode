@@ -8,10 +8,6 @@ import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.Mixer;
 import javax.sound.sampled.TargetDataLine;
 
-/**
- * @author Andy A wrapper class for switching between audio inputs (mixers)
- *
- */
 class AudioMixer {
 
     public String description;
@@ -99,14 +95,14 @@ class AudioMixer {
      * @return
      */
     public Line getDataLineForMixer() {
-        TargetDataLine line = null;
+        TargetDataLine lline = null;
         try {
-            line = (TargetDataLine) this.mixer.getLine(getDataLineInfo());
+            lline = (TargetDataLine) this.mixer.getLine(getDataLineInfo());
         } catch (LineUnavailableException e) {
             System.out.println("Error getting mix line:" + e.getMessage());
         }
 
-        return line;
+        return lline;
     }
 
     /**
@@ -160,9 +156,10 @@ class AudioMixer {
      */
     public Mixer.Info getMixerInfo(String mixerName) {
         Mixer.Info mixers[] = AudioSystem.getMixerInfo();
+        
         //iterate the mixers and display TargetLines
-        for (int i = 0; i < mixers.length; i++) {
-            Mixer m = AudioSystem.getMixer(mixers[i]);
+        for (Mixer.Info mixer1 : mixers) {
+            Mixer m = AudioSystem.getMixer(mixer1);
             // Ensure that only sound capture devices can be selected
             boolean isCaptureDevice = m.getMixerInfo().getDescription().endsWith("Capture");
             if ((m.getMixerInfo().getName().equals(mixerName)) && (isCaptureDevice == true)) {

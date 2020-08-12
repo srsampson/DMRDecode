@@ -155,6 +155,7 @@ public class JStatusBar extends JPanel {
         ButtonListener() {
         }
 
+        @Override
         public void actionPerformed(ActionEvent e) {
             // The user wants to pause the display
             if (e.getActionCommand().equals("Pause")) {

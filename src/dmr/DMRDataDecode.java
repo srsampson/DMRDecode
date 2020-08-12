@@ -6,9 +6,9 @@ import java.awt.Font;
 public class DMRDataDecode {
 
     private int dataType = -1;
-    private String line[] = new String[10];
-    private Font fonts[] = new Font[10];
-    private Color colours[] = new Color[10];
+    private final String line[] = new String[10];
+    private final Font fonts[] = new Font[10];
+    private final Color colours[] = new Color[10];
     private boolean CACHres, SLOT_TYPEres, BPTCres;
     private boolean shouldDisplay = true;
 
@@ -22,12 +22,18 @@ public class DMRDataDecode {
         } else {
             line[0] = theApp.getTimeStamp() + " DMR Data Frame";
         }
-        if (mode == 0) {
-            line[0] = line[0] + " (BS)";
-        } else if (mode == 1) {
-            line[0] = line[0] + " (MS)";
-        } else if (mode == 2) {
-            line[0] = line[0] + " (Direct)";
+        switch (mode) {
+            case 0:
+                line[0] = line[0] + " (BS)";
+                break;
+            case 1:
+                line[0] = line[0] + " (MS)";
+                break;
+            case 2:
+                line[0] = line[0] + " (Direct)";
+                break;
+            default:
+                break;
         }
         colours[0] = Color.BLACK;
         fonts[0] = theApp.boldFont;
@@ -235,11 +241,7 @@ public class DMRDataDecode {
 
     // Inform the main class that there has been an error
     public boolean isError() {
-        if ((SLOT_TYPEres == true) && (CACHres == true) && (BPTCres == true)) {
-            return true;
-        } else {
-            return false;
-        }
+        return (SLOT_TYPEres == true) && (CACHres == true) && (BPTCres == true);
     }
 
     // Return the fonts in use

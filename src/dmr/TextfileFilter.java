@@ -13,20 +13,18 @@ public class TextfileFilter extends javax.swing.filechooser.FileFilter {
         // get the extension of the file
         String extension = getExtension(f);
         // check to see if the extension is equal to "txt"
-        if (extension.equals("txt")) {
-            return true;
-        }
         // default -- fall through. False is return on all
         // occasions except:
         // a) the file is a directory
         // b) the file's extension is what we are looking for.
-        return false;
+        return extension.equals("txt");
     }
 
     /**
      * Again, this is declared in the abstract class The description of this
      * filter
      */
+    @Override
     public String getDescription() {
         return "TXT files";
     }

@@ -2,8 +2,8 @@ package dmr;
 
 public class DMRData {
 
-    private String display[] = new String[3];
-    private DMRDecode theApp;
+    private final String display[] = new String[3];
+    private final DMRDecode theApp;
 
     public DMRData(DMRDecode tapp) {
         theApp = tapp;
@@ -28,22 +28,31 @@ public class DMRData {
             dpf++;
         }
         // Types
-        if (dpf == 0) {
-            udt(bits);
-        } else if (dpf == 1) {
-            responsePacket(bits);
-        } else if (dpf == 2) {
-            unconfirmedData(bits);
-        } else if (dpf == 3) {
-            confirmedData(bits);
-        } else if (dpf == 13) {
-            definedShortData(bits);
-        } else if (dpf == 14) {
-            rawShortData(bits);
-        } else if (dpf == 15) {
-            propData(bits);
-        } else {
-            unknownData(bits, dpf);
+        switch (dpf) {
+            case 0:
+                udt(bits);
+                break;
+            case 1:
+                responsePacket(bits);
+                break;
+            case 2:
+                unconfirmedData(bits);
+                break;
+            case 3:
+                confirmedData(bits);
+                break;
+            case 13:
+                definedShortData(bits);
+                break;
+            case 14:
+                rawShortData(bits);
+                break;
+            case 15:
+                propData(bits);
+                break;
+            default:
+                unknownData(bits, dpf);
+                break;
         }
         return display;
     }
@@ -124,8 +133,8 @@ public class DMRData {
         int dllid = utils.retAddress(bits, 16);
         // Source LLID
         int sllid = utils.retAddress(bits, 40);
-        sa.append("Destination Logical Link ID : " + Integer.toString(dllid));
-        sa.append(" Source Logical Link ID : " + Integer.toString(sllid));
+        sa.append("Destination Logical Link ID : ").append(Integer.toString(dllid));
+        sa.append(" Source Logical Link ID : ").append(Integer.toString(sllid));
         display[1] = sa.toString();
         // Bit 64 is 0
         // Blocks to follow
@@ -190,7 +199,7 @@ public class DMRData {
         // Set the number of blocks to follow
         theApp.setCurrentDataBlocksToFollow(blocks);
         // Display this
-        sb.append(Integer.toString(blocks) + " blocks follow : ");
+        sb.append(Integer.toString(blocks)).append(" blocks follow : ");
         if ((dclass == 0) && (type == 1)) {
             sb.append("ACK");
         } else if ((dclass == 1) && (type == 0)) {
@@ -204,7 +213,7 @@ public class DMRData {
         } else if ((dclass == 2) && (type == 0)) {
             sb.append("SACK");
         } else {
-            sb.append(" Unknown C=" + Integer.toString(dclass) + " T=" + Integer.toString(type) + " S=" + Integer.toString(status));
+            sb.append(" Unknown C=").append(Integer.toString(dclass)).append(" T=").append(Integer.toString(type)).append(" S=").append(Integer.toString(status));
         }
         display[2] = sb.toString();
     }
@@ -220,8 +229,8 @@ public class DMRData {
         int dllid = utils.retAddress(bits, 16);
         // Source LLID
         int sllid = utils.retAddress(bits, 40);
-        sa.append("Destination Logical Link ID : " + Integer.toString(dllid));
-        sa.append(" Source Logical Link ID : " + Integer.toString(sllid));
+        sa.append("Destination Logical Link ID : ").append(Integer.toString(dllid));
+        sa.append(" Source Logical Link ID : ").append(Integer.toString(sllid));
         display[1] = sa.toString();
         // Bit 64 is 0
         // Blocks to follow
@@ -269,7 +278,7 @@ public class DMRData {
         // Set the blocks to follow
         theApp.setCurrentDataBlocksToFollow(blocks);
         // Display this
-        sb.append(Integer.toString(blocks) + " blocks follow : FSN=" + Integer.toString(fsn));
+        sb.append(Integer.toString(blocks)).append(" blocks follow : FSN=").append(Integer.toString(fsn));
         display[2] = sb.toString();
     }
 
@@ -284,8 +293,8 @@ public class DMRData {
         int dllid = utils.retAddress(bits, 16);
         // Source LLID
         int sllid = utils.retAddress(bits, 40);
-        sa.append("Destination Logical Link ID : " + Integer.toString(dllid));
-        sa.append(" Source Logical Link ID : " + Integer.toString(sllid));
+        sa.append("Destination Logical Link ID : ").append(Integer.toString(dllid));
+        sa.append(" Source Logical Link ID : ").append(Integer.toString(sllid));
         display[1] = sa.toString();
         // Bit 64 is F
         // Blocks to follow
@@ -345,7 +354,7 @@ public class DMRData {
         // Set the blocks to follow
         theApp.setCurrentDataBlocksToFollow(blocks);
         // Display this
-        sb.append(Integer.toString(blocks) + " blocks follow : FSN=" + Integer.toString(fsn) + " N(S)=" + Integer.toString(ns));
+        sb.append(Integer.toString(blocks)).append(" blocks follow : FSN=").append(Integer.toString(fsn)).append(" N(S)=").append(Integer.toString(ns));
         display[2] = sb.toString();
     }
 

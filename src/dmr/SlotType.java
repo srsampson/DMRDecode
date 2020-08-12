@@ -24,34 +24,48 @@ public class SlotType {
         // these need reuniting into a single 20 bit boolean array
         r = 0;
         for (a = 61; a < 66; a++) {
-            if (dibit_buf[a] == 0) {
-                dataSLOT[r] = false;
-                dataSLOT[r + 1] = false;
-            } else if (dibit_buf[a] == 1) {
-                dataSLOT[r] = false;
-                dataSLOT[r + 1] = true;
-            } else if (dibit_buf[a] == 2) {
-                dataSLOT[r] = true;
-                dataSLOT[r + 1] = false;
-            } else if (dibit_buf[a] == 3) {
-                dataSLOT[r] = true;
-                dataSLOT[r + 1] = true;
+            switch (dibit_buf[a]) {
+                case 0:
+                    dataSLOT[r] = false;
+                    dataSLOT[r + 1] = false;
+                    break;
+                case 1:
+                    dataSLOT[r] = false;
+                    dataSLOT[r + 1] = true;
+                    break;
+                case 2:
+                    dataSLOT[r] = true;
+                    dataSLOT[r + 1] = false;
+                    break;
+                case 3:
+                    dataSLOT[r] = true;
+                    dataSLOT[r + 1] = true;
+                    break;
+                default:
+                    break;
             }
             r = r + 2;
         }
         for (a = 90; a < 95; a++) {
-            if (dibit_buf[a] == 0) {
-                dataSLOT[r] = false;
-                dataSLOT[r + 1] = false;
-            } else if (dibit_buf[a] == 1) {
-                dataSLOT[r] = false;
-                dataSLOT[r + 1] = true;
-            } else if (dibit_buf[a] == 2) {
-                dataSLOT[r] = true;
-                dataSLOT[r + 1] = false;
-            } else if (dibit_buf[a] == 3) {
-                dataSLOT[r] = true;
-                dataSLOT[r + 1] = true;
+            switch (dibit_buf[a]) {
+                case 0:
+                    dataSLOT[r] = false;
+                    dataSLOT[r + 1] = false;
+                    break;
+                case 1:
+                    dataSLOT[r] = false;
+                    dataSLOT[r + 1] = true;
+                    break;
+                case 2:
+                    dataSLOT[r] = true;
+                    dataSLOT[r + 1] = false;
+                    break;
+                case 3:
+                    dataSLOT[r] = true;
+                    dataSLOT[r + 1] = true;
+                    break;
+                default:
+                    break;
             }
             r = r + 2;
         }
@@ -94,29 +108,41 @@ public class SlotType {
             dataType++;
         }
         // Display this info
-        sb.append("Slot Type : Color Code " + Integer.toString(colourCode));
-        if (dataType == 0) {
-            sb.append(" PI Header");
-        } else if (dataType == 1) {
-            sb.append(" Voice LC Header");
-        } else if (dataType == 2) {
-            sb.append(" Terminator with LC");
-        } else if (dataType == 3) {
-            sb.append(" CSBK");
-        } else if (dataType == 4) {
-            sb.append(" MBC Header");
-        } else if (dataType == 5) {
-            sb.append(" MBC Continuation");
-        } else if (dataType == 6) {
-            sb.append(" Data Header");
-        } else if (dataType == 7) {
-            sb.append(" Rate 1/2 Data Continuation");
-        } else if (dataType == 8) {
-            sb.append(" Rate 3/4 Data Continuation");
-        } else if (dataType == 9) {
-            sb.append(" Idle");
-        } else {
-            sb.append(" Reserved for future use");
+        sb.append("Slot Type : Color Code ").append(Integer.toString(colourCode));
+        switch (dataType) {
+            case 0:
+                sb.append(" PI Header");
+                break;
+            case 1:
+                sb.append(" Voice LC Header");
+                break;
+            case 2:
+                sb.append(" Terminator with LC");
+                break;
+            case 3:
+                sb.append(" CSBK");
+                break;
+            case 4:
+                sb.append(" MBC Header");
+                break;
+            case 5:
+                sb.append(" MBC Continuation");
+                break;
+            case 6:
+                sb.append(" Data Header");
+                break;
+            case 7:
+                sb.append(" Rate 1/2 Data Continuation");
+                break;
+            case 8:
+                sb.append(" Rate 3/4 Data Continuation");
+                break;
+            case 9:
+                sb.append(" Idle");
+                break;
+            default:
+                sb.append(" Reserved for future use");
+                break;
         }
         // Convert from StringBuilder to a String
         line = sb.toString();
@@ -132,46 +158,14 @@ public class SlotType {
         // Run through all possible 8 bit values
         for (a = 0; a < 256; a++) {
             // Convert to binary
-            if ((a & 128) > 0) {
-                d[0] = true;
-            } else {
-                d[0] = false;
-            }
-            if ((a & 64) > 0) {
-                d[1] = true;
-            } else {
-                d[1] = false;
-            }
-            if ((a & 32) > 0) {
-                d[2] = true;
-            } else {
-                d[2] = false;
-            }
-            if ((a & 16) > 0) {
-                d[3] = true;
-            } else {
-                d[3] = false;
-            }
-            if ((a & 8) > 0) {
-                d[4] = true;
-            } else {
-                d[4] = false;
-            }
-            if ((a & 4) > 0) {
-                d[5] = true;
-            } else {
-                d[5] = false;
-            }
-            if ((a & 2) > 0) {
-                d[6] = true;
-            } else {
-                d[6] = false;
-            }
-            if ((a & 1) > 0) {
-                d[7] = true;
-            } else {
-                d[7] = false;
-            }
+            d[0] = (a & 128) > 0;
+            d[1] = (a & 64) > 0;
+            d[2] = (a & 32) > 0;
+            d[3] = (a & 16) > 0;
+            d[4] = (a & 8) > 0;
+            d[5] = (a & 4) > 0;
+            d[6] = (a & 2) > 0;
+            d[7] = (a & 1) > 0;
             // Shift the value 12 times to the left
             value[a] = a << 12;
             // Calculate the parity bits

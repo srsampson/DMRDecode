@@ -16,12 +16,18 @@ public class DMRVoice {
         theApp = tTheApp;
         int mode = tTheApp.getMode();
         line[0] = theApp.getTimeStamp() + " DMR Voice Frame ";
-        if (mode == 0) {
-            line[0] = line[0] + " (BS)";
-        } else if (mode == 1) {
-            line[0] = line[0] + " (MS)";
-        } else if (mode == 2) {
-            line[0] = line[0] + " (Direct)";
+        switch (mode) {
+            case 0:
+                line[0] = line[0] + " (BS)";
+                break;
+            case 1:
+                line[0] = line[0] + " (MS)";
+                break;
+            case 2:
+                line[0] = line[0] + " (Direct)";
+                break;
+            default:
+                break;
         }
         fonts[0] = theApp.boldFont;
         colours[0] = Color.BLACK;

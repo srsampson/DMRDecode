@@ -342,7 +342,7 @@ public class Utilities {
         if (priority == 0) {
             so.append("/No priority");
         } else {
-            so.append("/Priority " + Integer.toString(priority));
+            so.append("/Priority ").append(Integer.toString(priority));
         }
         return so.toString();
     }

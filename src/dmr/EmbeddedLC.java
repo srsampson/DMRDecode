@@ -14,18 +14,25 @@ public class EmbeddedLC {
         boolean rawdata[] = new boolean[32];
         // Convert from dibits into boolean
         for (a = 70; a < 86; a++) {
-            if (dibit_buf[a] == 0) {
-                rawdata[r] = false;
-                rawdata[r + 1] = false;
-            } else if (dibit_buf[a] == 1) {
-                rawdata[r] = false;
-                rawdata[r + 1] = true;
-            } else if (dibit_buf[a] == 2) {
-                rawdata[r] = true;
-                rawdata[r + 1] = false;
-            } else if (dibit_buf[a] == 3) {
-                rawdata[r] = true;
-                rawdata[r + 1] = true;
+            switch (dibit_buf[a]) {
+                case 0:
+                    rawdata[r] = false;
+                    rawdata[r + 1] = false;
+                    break;
+                case 1:
+                    rawdata[r] = false;
+                    rawdata[r + 1] = true;
+                    break;
+                case 2:
+                    rawdata[r] = true;
+                    rawdata[r + 1] = false;
+                    break;
+                case 3:
+                    rawdata[r] = true;
+                    rawdata[r + 1] = true;
+                    break;
+                default:
+                    break;
             }
             r = r + 2;
         }
@@ -166,12 +173,9 @@ public class EmbeddedLC {
         c[2] = d[2] ^ d[3] ^ d[4] ^ d[5] ^ d[7] ^ d[9] ^ d[10];
         c[3] = d[0] ^ d[1] ^ d[2] ^ d[4] ^ d[6] ^ d[7] ^ d[10];
         c[4] = d[0] ^ d[2] ^ d[5] ^ d[6] ^ d[8] ^ d[9] ^ d[10];
+        
         // Compare these with the actual bits
-        if ((c[0] == d[11]) && (c[1] == d[12]) && (c[2] == d[13]) && (c[3] == d[14]) && (c[4] == d[15])) {
-            return true;
-        } else {
-            return false;
-        }
+        return (c[0] == d[11]) && (c[1] == d[12]) && (c[2] == d[13]) && (c[3] == d[14]) && (c[4] == d[15]);
     }
 
     // Deal with a single block embedded LC

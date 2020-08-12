@@ -35,6 +35,7 @@ import java.io.DataInputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.PipedInputStream;
+import java.lang.reflect.InvocationTargetException;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.ThreadFactory;
@@ -48,7 +49,7 @@ public class DMRDecode {
     public String program_version = "DMR Decoder";
     public int vertical_scrollbar_value = 0;
     public int horizontal_scrollbar_value = 0;
-    private static boolean RUNNING = true;
+    private static final boolean RUNNING = true;
     private final int SAMPLESPERSYMBOL = 10;
     private final int SYMBOLCENTRE = 4;
     private final int MAXSTARTVALUE = 15000;
@@ -139,6 +140,7 @@ public class DMRDecode {
 
     private ExecutorService socketExecutor = Executors.newSingleThreadExecutor(
             new ThreadFactory() {
+        @Override
         public Thread newThread(Runnable r) {
             Thread thread = new Thread(r);
             thread.setName("DMRDecode Socket Thread");
@@ -150,6 +152,7 @@ public class DMRDecode {
 
     private ExecutorService mainExecutor = Executors.newSingleThreadExecutor(
             new ThreadFactory() {
+        @Override
         public Thread newThread(Runnable r) {
             Thread thread = new Thread(r);
             thread.setName("DMRDecode Main Thread");
@@ -161,6 +164,7 @@ public class DMRDecode {
 
     private ExecutorService audioInputExecutor = Executors.newSingleThreadExecutor(
             new ThreadFactory() {
+        @Override
         public Thread newThread(Runnable r) {
             Thread thread = new Thread(r);
             thread.setName("DMRDecode Audio Input Thread");
@@ -175,6 +179,7 @@ public class DMRDecode {
         try {
             theApp = new DMRDecode();
             SwingUtilities.invokeAndWait(new Runnable() {
+                @Override
                 public void run() {
                     theApp.createGUI();
                 }
@@ -183,7 +188,7 @@ public class DMRDecode {
             theApp.socketExecutor.submit(theApp.socketThread);
             //this returns a boolean...
             theApp.socketThread.setupSocket();
-        } catch (Exception e) {
+        } catch (InterruptedException | InvocationTargetException e) {
             JOptionPane.showMessageDialog(null, "Error in socket setup during main()", "DMRDecode", JOptionPane.INFORMATION_MESSAGE);
             System.exit(0);
         }
@@ -195,7 +200,7 @@ public class DMRDecode {
             theApp.inPipe = new PipedInputStream(theApp.lineInThread.getPipedWriter(), 16384);
             // Now connect a data input stream to the piped input stream
             theApp.inPipeData = new DataInputStream(theApp.inPipe);
-        } catch (Exception e) {
+        } catch (IOException e) {
             JOptionPane.showMessageDialog(null, "Error in main()", "DMRDecode", JOptionPane.INFORMATION_MESSAGE);
             System.exit(0);
         }
@@ -203,6 +208,7 @@ public class DMRDecode {
         theApp.audioInputExecutor.submit(theApp.lineInThread);
 
         theApp.mainExecutor.submit(new Runnable() {
+            @Override
             public void run() {
                 while (RUNNING) {
                     if ((theApp.lineInThread.getAudioReady() == true) && (theApp.pReady == true)) {
@@ -441,11 +447,7 @@ public class DMRDecode {
                         } else {
                             addToMinMaxBuffer(lmin, lmax);
                         }
-                        if (lastsynctype == -1) {
-                            firstframe = true;
-                        } else {
-                            firstframe = false;
-                        }
+                        firstframe = lastsynctype == -1;
                         lastsynctype = 10;
                         mode = 0;
                         return (10);
@@ -460,11 +462,7 @@ public class DMRDecode {
                         } else {
                             addToMinMaxBuffer(lmin, lmax);
                         }
-                        if (lastsynctype == -1) {
-                            firstframe = true;
-                        } else {
-                            firstframe = false;
-                        }
+                        firstframe = lastsynctype == -1;
                         lastsynctype = 12;
                         mode = 0;
                         return (12);
@@ -478,11 +476,7 @@ public class DMRDecode {
                         } else {
                             addToMinMaxBuffer(lmin, lmax);
                         }
-                        if (lastsynctype == -1) {
-                            firstframe = true;
-                        } else {
-                            firstframe = false;
-                        }
+                        firstframe = lastsynctype == -1;
                         lastsynctype = 20;
                         mode = 1;
                         return (20);
@@ -496,11 +490,7 @@ public class DMRDecode {
                         } else {
                             addToMinMaxBuffer(lmin, lmax);
                         }
-                        if (lastsynctype == -1) {
-                            firstframe = true;
-                        } else {
-                            firstframe = false;
-                        }
+                        firstframe = lastsynctype == -1;
                         lastsynctype = 22;
                         mode = 1;
                         return (22);
@@ -514,11 +504,7 @@ public class DMRDecode {
                         } else {
                             addToMinMaxBuffer(lmin, lmax);
                         }
-                        if (lastsynctype == -1) {
-                            firstframe = true;
-                        } else {
-                            firstframe = false;
-                        }
+                        firstframe = lastsynctype == -1;
                         lastsynctype = 25;
                         mode = 1;
                         return (25);
@@ -532,11 +518,7 @@ public class DMRDecode {
                         } else {
                             addToMinMaxBuffer(lmin, lmax);
                         }
-                        if (lastsynctype == -1) {
-                            firstframe = true;
-                        } else {
-                            firstframe = false;
-                        }
+                        firstframe = lastsynctype == -1;
                         lastsynctype = 30;
                         mode = 2;
                         return (30);
@@ -549,11 +531,7 @@ public class DMRDecode {
                         } else {
                             addToMinMaxBuffer(lmin, lmax);
                         }
-                        if (lastsynctype == -1) {
-                            firstframe = true;
-                        } else {
-                            firstframe = false;
-                        }
+                        firstframe = lastsynctype == -1;
                         lastsynctype = 31;
                         mode = 2;
                         return (31);
@@ -567,11 +545,7 @@ public class DMRDecode {
                         } else {
                             addToMinMaxBuffer(lmin, lmax);
                         }
-                        if (lastsynctype == -1) {
-                            firstframe = true;
-                        } else {
-                            firstframe = false;
-                        }
+                        firstframe = lastsynctype == -1;
                         lastsynctype = 32;
                         mode = 2;
                         return (32);
@@ -585,11 +559,7 @@ public class DMRDecode {
                         } else {
                             addToMinMaxBuffer(lmin, lmax);
                         }
-                        if (lastsynctype == -1) {
-                            firstframe = true;
-                        } else {
-                            firstframe = false;
-                        }
+                        firstframe = lastsynctype == -1;
                         lastsynctype = 33;
                         mode = 2;
                         return (33);
@@ -603,11 +573,7 @@ public class DMRDecode {
                         } else {
                             addToMinMaxBuffer(lmin, lmax);
                         }
-                        if (lastsynctype == -1) {
-                            firstframe = true;
-                        } else {
-                            firstframe = false;
-                        }
+                        firstframe = lastsynctype == -1;
                         lastsynctype = 33;
                         mode = 0;
                         return (40);
@@ -622,9 +588,9 @@ public class DMRDecode {
                     // If in debug mode show that sync has been lost
                     if (debug == true) {
                         StringBuilder l = new StringBuilder(250);
-                        l.append(getTimeStamp() + " Sync Lost");
-                        l.append(" : center=" + Integer.toString(centre));
-                        l.append(" max=" + Integer.toString(max) + " min=" + Integer.toString(min) + " umid=" + Integer.toString(umid) + " lmid=" + Integer.toString(lmid));
+                        l.append(getTimeStamp()).append(" Sync Lost");
+                        l.append(" : center=").append(Integer.toString(centre));
+                        l.append(" max=").append(Integer.toString(max)).append(" min=").append(Integer.toString(min)).append(" umid=").append(Integer.toString(umid)).append(" lmid=").append(Integer.toString(lmid));
                         addLine(l.toString(), Color.BLACK, plainFont);
                         fileWrite(l.toString());
                     }
@@ -856,9 +822,7 @@ public class DMRDecode {
 
     // Adds a line to the display as long as pause isn't enabled
     public void addLine(final String line, final Color col, final Font font) {
-        if (pauseScreen == true) {
-            return;
-        } else {
+        if (pauseScreen == false) {
             display_view.add_line(line, col, font);
         }
     }
@@ -885,26 +849,39 @@ public class DMRDecode {
             // If debug enabled record obtaining sync
             if (debug == true) {
                 StringBuilder l = new StringBuilder(250);
-                if (synctype == 12) {
-                    l.append(getTimeStamp() + " DMR BS Voice Sync Acquired");
-                } else if (synctype == 10) {
-                    l.append(getTimeStamp() + " DMR BS Data Sync Acquired : center=" + Integer.toString(centre) + " max=" + Integer.toString(max) + " min=" + Integer.toString(min) + " umid=" + Integer.toString(umid) + " lmid=" + Integer.toString(lmid));
-                } else if (synctype == 22) {
-                    l.append(getTimeStamp() + " DMR MS Voice Sync Acquired : center=" + Integer.toString(centre) + " max=" + Integer.toString(max) + " min=" + Integer.toString(min) + " umid=" + Integer.toString(umid) + " lmid=" + Integer.toString(lmid));
-                } else if (synctype == 20) {
-                    l.append(getTimeStamp() + " DMR MS Data Sync Acquired : center=" + Integer.toString(centre) + " max=" + Integer.toString(max) + " min=" + Integer.toString(min) + " umid=" + Integer.toString(umid) + " lmid=" + Integer.toString(lmid));
-                } else if (synctype == 25) {
-                    l.append(getTimeStamp() + " DMR RC Sync Acquired : center=" + Integer.toString(centre) + " max=" + Integer.toString(max) + " min=" + Integer.toString(min) + " umid=" + Integer.toString(umid) + " lmid=" + Integer.toString(lmid));
-                } else if (synctype == 30) {
-                    l.append(getTimeStamp() + " DMR Direct Voice 1 Sync Acquired : center=" + Integer.toString(centre) + " max=" + Integer.toString(max) + " min=" + Integer.toString(min) + " umid=" + Integer.toString(umid) + " lmid=" + Integer.toString(lmid));
-                } else if (synctype == 31) {
-                    l.append(getTimeStamp() + " DMR Direct Data Data 1 Sync Acquired : center=" + Integer.toString(centre) + " max=" + Integer.toString(max) + " min=" + Integer.toString(min) + " umid=" + Integer.toString(umid) + " lmid=" + Integer.toString(lmid));
-                } else if (synctype == 32) {
-                    l.append(getTimeStamp() + " DMR Direct Voice 2 Sync Acquired : center=" + Integer.toString(centre) + " max=" + Integer.toString(max) + " min=" + Integer.toString(min) + " umid=" + Integer.toString(umid) + " lmid=" + Integer.toString(lmid));
-                } else if (synctype == 33) {
-                    l.append(getTimeStamp() + " DMR Direct Data Data 2 Sync Acquired : center=" + Integer.toString(centre) + " max=" + Integer.toString(max) + " min=" + Integer.toString(min) + " umid=" + Integer.toString(umid) + " lmid=" + Integer.toString(lmid));
-                } else if (synctype == 40) {
-                    l.append(getTimeStamp() + " DMR BS Data Rest Sync Acquired : center=" + Integer.toString(centre) + " max=" + Integer.toString(max) + " min=" + Integer.toString(min) + " umid=" + Integer.toString(umid) + " lmid=" + Integer.toString(lmid));
+                switch (synctype) {
+                    case 12:
+                        l.append(getTimeStamp()).append(" DMR BS Voice Sync Acquired");
+                        break;
+                    case 10:
+                        l.append(getTimeStamp()).append(" DMR BS Data Sync Acquired : center=").append(Integer.toString(centre)).append(" max=").append(Integer.toString(max)).append(" min=").append(Integer.toString(min)).append(" umid=").append(Integer.toString(umid)).append(" lmid=").append(Integer.toString(lmid));
+                        break;
+                    case 22:
+                        l.append(getTimeStamp()).append(" DMR MS Voice Sync Acquired : center=").append(Integer.toString(centre)).append(" max=").append(Integer.toString(max)).append(" min=").append(Integer.toString(min)).append(" umid=").append(Integer.toString(umid)).append(" lmid=").append(Integer.toString(lmid));
+                        break;
+                    case 20:
+                        l.append(getTimeStamp()).append(" DMR MS Data Sync Acquired : center=").append(Integer.toString(centre)).append(" max=").append(Integer.toString(max)).append(" min=").append(Integer.toString(min)).append(" umid=").append(Integer.toString(umid)).append(" lmid=").append(Integer.toString(lmid));
+                        break;
+                    case 25:
+                        l.append(getTimeStamp()).append(" DMR RC Sync Acquired : center=").append(Integer.toString(centre)).append(" max=").append(Integer.toString(max)).append(" min=").append(Integer.toString(min)).append(" umid=").append(Integer.toString(umid)).append(" lmid=").append(Integer.toString(lmid));
+                        break;
+                    case 30:
+                        l.append(getTimeStamp()).append(" DMR Direct Voice 1 Sync Acquired : center=").append(Integer.toString(centre)).append(" max=").append(Integer.toString(max)).append(" min=").append(Integer.toString(min)).append(" umid=").append(Integer.toString(umid)).append(" lmid=").append(Integer.toString(lmid));
+                        break;
+                    case 31:
+                        l.append(getTimeStamp()).append(" DMR Direct Data Data 1 Sync Acquired : center=").append(Integer.toString(centre)).append(" max=").append(Integer.toString(max)).append(" min=").append(Integer.toString(min)).append(" umid=").append(Integer.toString(umid)).append(" lmid=").append(Integer.toString(lmid));
+                        break;
+                    case 32:
+                        l.append(getTimeStamp()).append(" DMR Direct Voice 2 Sync Acquired : center=").append(Integer.toString(centre)).append(" max=").append(Integer.toString(max)).append(" min=").append(Integer.toString(min)).append(" umid=").append(Integer.toString(umid)).append(" lmid=").append(Integer.toString(lmid));
+                        break;
+                    case 33:
+                        l.append(getTimeStamp()).append(" DMR Direct Data Data 2 Sync Acquired : center=").append(Integer.toString(centre)).append(" max=").append(Integer.toString(max)).append(" min=").append(Integer.toString(min)).append(" umid=").append(Integer.toString(umid)).append(" lmid=").append(Integer.toString(lmid));
+                        break;
+                    case 40:
+                        l.append(getTimeStamp()).append(" DMR BS Data Rest Sync Acquired : center=").append(Integer.toString(centre)).append(" max=").append(Integer.toString(max)).append(" min=").append(Integer.toString(min)).append(" umid=").append(Integer.toString(umid)).append(" lmid=").append(Integer.toString(lmid));
+                        break;
+                    default:
+                        break;
                 }
                 addLine(l.toString(), Color.BLACK, plainFont);
                 fileWrite(l.toString());
@@ -1078,7 +1055,7 @@ public class DMRDecode {
         try {
             file.write(fline);
             file.flush();
-        } catch (Exception e) {
+        } catch (IOException e) {
             // Stop logging as we have a problem
             logging = false;
             System.out.println("\nError writing to the logging file");
@@ -1104,7 +1081,7 @@ public class DMRDecode {
         try {
             quickLogFile.write(fline);
             quickLogFile.flush();
-        } catch (Exception e) {
+        } catch (IOException e) {
             // Stop logging as we have a problem
             quickLog = false;
             System.out.println("\nError writing to the quick log file");
@@ -1129,7 +1106,7 @@ public class DMRDecode {
         try {
             captureFile.write("\r\n");
             captureFile.write(Integer.toString(sample));
-        } catch (Exception e) {
+        } catch (IOException e) {
             System.err.println("Error: " + e.getMessage());
             captureMode = false;
         }
@@ -1148,7 +1125,7 @@ public class DMRDecode {
             dfile.write("\r\n");
             dfile.flush();
             dfile.close();
-        } catch (Exception e) {
+        } catch (IOException e) {
             System.err.println("Error: " + e.getMessage());
         }
     }
@@ -1190,10 +1167,10 @@ public class DMRDecode {
         c2 = (int) (((float) c2 / mp) * (float) 100);
         c3 = (int) (((float) c3 / mp) * (float) 100);
         // Write this to a line
-        dline.append("Dibit 0=" + Integer.toString(c0) + "% ");
-        dline.append("Dibit 1=" + Integer.toString(c1) + "% ");
-        dline.append("Dibit 2=" + Integer.toString(c2) + "% ");
-        dline.append("Dibit 3=" + Integer.toString(c3) + "% ");
+        dline.append("Dibit 0=").append(Integer.toString(c0)).append("% ");
+        dline.append("Dibit 1=").append(Integer.toString(c1)).append("% ");
+        dline.append("Dibit 2=").append(Integer.toString(c2)).append("% ");
+        dline.append("Dibit 3=").append(Integer.toString(c3)).append("% ");
         return dline.toString();
     }
 
@@ -1242,7 +1219,7 @@ public class DMRDecode {
         try {
             captureFile = new FileWriter("capture_dump.csv");
             captureMode = true;
-        } catch (Exception e) {
+        } catch (IOException e) {
             captureMode = false;
         }
     }
@@ -1252,7 +1229,7 @@ public class DMRDecode {
         try {
             captureFile.flush();
             captureFile.close();
-        } catch (Exception e) {
+        } catch (IOException e) {
             JOptionPane.showMessageDialog(null, "Error closing the capture file", "DMRDecode", JOptionPane.INFORMATION_MESSAGE);
         }
         // We aren't in capture mode any longer
@@ -1290,7 +1267,7 @@ public class DMRDecode {
         // Get the sample from the sound card via the sound thread
         try {
             sample = inPipeData.readInt();
-        } catch (Exception e) {
+        } catch (IOException e) {
             JOptionPane.showMessageDialog(null, "Error in getSample()", "DMRDecode", JOptionPane.INFORMATION_MESSAGE);
         }
         // If in capture mode record the sample in the capture file
@@ -1489,7 +1466,7 @@ public class DMRDecode {
             // Flush and close the file //
             xmlfile.flush();
             xmlfile.close();
-        } catch (Exception e) {
+        } catch (IOException e) {
             JOptionPane.showMessageDialog(null, "Error : Unable to create the file DMRDecode_settings.xml\n" + e.toString(), "Rivet", JOptionPane.ERROR_MESSAGE);
             return false;
         }
@@ -1528,9 +1505,11 @@ public class DMRDecode {
 
         String value;
 
+        @Override
         public void endElement(String namespaceURI, String localName, String qName) throws SAXException {
         }
 
+        @Override
         public void characters(char[] ch, int start, int length) throws SAXException {
             // Extract the element value as a string //
             String tval = new String(ch);
@@ -1553,51 +1532,27 @@ public class DMRDecode {
                 }
                 // Invert
                 if (qName.equals("invert")) {
-                    if (aval.equals("TRUE")) {
-                        inverted = true;
-                    } else {
-                        inverted = false;
-                    }
+                    inverted = aval.equals("TRUE");
                 }
                 // Symbol display
                 if (qName.equals("symbolDisplay")) {
-                    if (aval.equals("TRUE")) {
-                        enableDisplayBar = true;
-                    } else {
-                        enableDisplayBar = false;
-                    }
+                    enableDisplayBar = aval.equals("TRUE");
                 }
                 // Display CACH
                 if (qName.equals("displayCACH")) {
-                    if (aval.equals("TRUE")) {
-                        displayCACH = true;
-                    } else {
-                        displayCACH = false;
-                    }
+                    displayCACH = aval.equals("TRUE");
                 }
                 // Display only good frames
                 if (qName.equals("goodFramesOnly")) {
-                    if (aval.equals("TRUE")) {
-                        displayOnlyGoodFrames = true;
-                    } else {
-                        displayOnlyGoodFrames = false;
-                    }
+                    displayOnlyGoodFrames = aval.equals("TRUE");
                 }
                 // Display Idle PDUs
                 if (qName.equals("idlePDU")) {
-                    if (aval.equals("TRUE")) {
-                        displayIdlePDU = true;
-                    } else {
-                        displayIdlePDU = false;
-                    }
+                    displayIdlePDU = aval.equals("TRUE");
                 }
                 // Display Voice Frames
                 if (qName.equals("voiceFrames")) {
-                    if (aval.equals("TRUE")) {
-                        displayVoiceFrames = true;
-                    } else {
-                        displayVoiceFrames = false;
-                    }
+                    displayVoiceFrames = aval.equals("TRUE");
                 }
                 // The audio input source
                 if (qName.equals("audioDevice")) {

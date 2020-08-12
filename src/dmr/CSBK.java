@@ -3,7 +3,7 @@ package dmr;
 public class CSBK {
 
     boolean lb, pf;
-    private String display[] = new String[3];
+    private final String display[] = new String[3];
 
     // The main decode method
     public String[] decode(DMRDecode theApp, boolean bits[]) {
@@ -159,7 +159,7 @@ public class CSBK {
     private void unknownCSBK(int csbko, int fid, boolean bits[]) {
         int a;
         StringBuilder sb = new StringBuilder(250);
-        sb.append("Unknown CSBK : CSBKO=" + Integer.toString(csbko) + " + FID=" + Integer.toString(fid) + " ");
+        sb.append("Unknown CSBK : CSBKO=").append(Integer.toString(csbko)).append(" + FID=").append(Integer.toString(fid)).append(" ");
         // Display the binary
         for (a = 16; a < 80; a++) {
             if (bits[a] == true) {
@@ -219,13 +219,13 @@ public class CSBK {
         } else {
             sb.append(" Data content ");
         }
-        sb.append(Integer.toString(bfol) + " Blocks to follow");
+        sb.append(Integer.toString(bfol)).append(" Blocks to follow");
         display[0] = sb.toString();
-        sc.append("Target Address : " + Integer.toString(target));
+        sc.append("Target Address : ").append(Integer.toString(target));
         if (gi == true) {
             sc.append(" (Group)");
         }
-        sc.append(" Source Address : " + Integer.toString(source));
+        sc.append(" Source Address : ").append(Integer.toString(source));
         display[1] = sc.toString();
         // Target
         theApp.usersLogged.addUser(target);
@@ -456,13 +456,13 @@ public class CSBK {
         // Display all this
         // Only show more if we have any activity
         if ((bits[24] == false) && (bits[25] == false) && (bits[26] == false) && (bits[27] == false) && (bits[28] == false) && (bits[29] == false)) {
-            sb1.append("Activity Update : LCN " + Integer.toString(lcn) + " is the Rest Channel");
+            sb1.append("Activity Update : LCN ").append(Integer.toString(lcn)).append(" is the Rest Channel");
         } else {
             boolean nf = false;
-            sb1.append("Activity Update : LCN " + Integer.toString(lcn) + " is the rest channel (");
+            sb1.append("Activity Update : LCN ").append(Integer.toString(lcn)).append(" is the rest channel (");
             if (bits[24] == true) {
                 if (group1 > 0) {
-                    sb1.append("Group " + Integer.toString(group1) + " on LCN 1");
+                    sb1.append("Group ").append(Integer.toString(group1)).append(" on LCN 1");
                 } else {
                     sb1.append("Activity on LCN 1");
                 }
@@ -473,7 +473,7 @@ public class CSBK {
                     sb1.append(",");
                 }
                 if (group2 > 0) {
-                    sb1.append("Group " + Integer.toString(group2) + " on LCN 2");
+                    sb1.append("Group ").append(Integer.toString(group2)).append(" on LCN 2");
                 } else {
                     sb1.append("Activity on LCN 2");
                 }
@@ -484,7 +484,7 @@ public class CSBK {
                     sb1.append(",");
                 }
                 if (group3 > 0) {
-                    sb1.append("Group " + Integer.toString(group3) + " on LCN 3");
+                    sb1.append("Group ").append(Integer.toString(group3)).append(" on LCN 3");
                 } else {
                     sb1.append("Activity on LCN 3");
                 }
@@ -495,7 +495,7 @@ public class CSBK {
                     sb1.append(",");
                 }
                 if (group4 > 0) {
-                    sb1.append("Group " + Integer.toString(group4) + " on LCN 4");
+                    sb1.append("Group ").append(Integer.toString(group4)).append(" on LCN 4");
                 } else {
                     sb1.append("Activity on LCN 4");
                 }
@@ -506,7 +506,7 @@ public class CSBK {
                     sb1.append(",");
                 }
                 if (group5 > 0) {
-                    sb1.append("Group " + Integer.toString(group5) + " on LCN 5");
+                    sb1.append("Group ").append(Integer.toString(group5)).append(" on LCN 5");
                 } else {
                     sb1.append("Activity on LCN 5");
                 }
@@ -517,7 +517,7 @@ public class CSBK {
                     sb1.append(",");
                 }
                 if (group6 > 0) {
-                    sb1.append("Group " + Integer.toString(group6) + " on LCN 6");
+                    sb1.append("Group ").append(Integer.toString(group6)).append(" on LCN 6");
                 } else {
                     sb1.append("Activity on LCN 6");
                 }
@@ -572,14 +572,14 @@ public class CSBK {
         // see http://forums.radioreference.com/digital-voice-decoding-software/213131-understanding-connect-plus-trunking-7.html#post1909226
         boolean timeSlot = bits[68];
         // Display this
-        sb1.append("Channel Grant : LCN " + Integer.toString(lcn));
+        sb1.append("Channel Grant : LCN ").append(Integer.toString(lcn));
         if (timeSlot == false) {
             sb1.append(" TS1");
         } else {
             sb1.append(" TS2");
         }
-        sb1.append(" Source " + Integer.toString(source));
-        sb1.append(" Group " + Integer.toString(group));
+        sb1.append(" Source ").append(Integer.toString(source));
+        sb1.append(" Group ").append(Integer.toString(group));
         display[1] = sb1.toString();
         // Display the full binary if in debug mode
         if (theApp.isDebug() == true) {
@@ -624,7 +624,7 @@ public class CSBK {
         nb5 = utils.retSix(bits, 50);
         // bits 56,57,58,59,60,61,62,63,64,65,66,67,68,69,70,71,72,73,74,75,76,77,78,79 have an unknown purpose
         // Display this info
-        sb1.append(Integer.toString(nb1) + "," + Integer.toString(nb2) + "," + Integer.toString(nb3) + "," + Integer.toString(nb4) + "," + Integer.toString(nb5) + " (");
+        sb1.append(Integer.toString(nb1)).append(",").append(Integer.toString(nb2)).append(",").append(Integer.toString(nb3)).append(",").append(Integer.toString(nb4)).append(",").append(Integer.toString(nb5)).append(" (");
         // Also display as raw binary for now
         for (a = 16; a < 80; a++) {
             if (bits[a] == true) {
@@ -693,7 +693,7 @@ public class CSBK {
         if (bits[28] == true) {
             mask++;
         }
-        sb1.append("Mask=" + Integer.toString(mask) + " : ");
+        sb1.append("Mask=").append(Integer.toString(mask)).append(" : ");
         // Service Function
         int sf = 0;
         if (bits[29] == true) {
@@ -702,7 +702,7 @@ public class CSBK {
         if (bits[30] == true) {
             sf++;
         }
-        sb1.append("Service Function=" + Integer.toString(sf) + " : ");
+        sb1.append("Service Function=").append(Integer.toString(sf)).append(" : ");
         // Reg
         if (bits[35] == true) {
             sb1.append("TSCC demands MS must register");
@@ -710,10 +710,10 @@ public class CSBK {
         display[1] = sb1.toString();
         // System Identity Code
         int sysID = utils.retSixteen(bits, 40);
-        sb2.append("System Identity Code=" + Integer.toString(sysID) + " : ");
+        sb2.append("System Identity Code=").append(Integer.toString(sysID)).append(" : ");
         // MS Address
         int addr = utils.retAddress(bits, 56);
-        sb2.append("MS Individual Address=" + Integer.toString(addr));
+        sb2.append("MS Individual Address=").append(Integer.toString(addr));
         display[2] = sb2.toString();
     }
 
@@ -751,34 +751,49 @@ public class CSBK {
         // Service_Kind
         String service_kind;
         int sk = utils.retFour(bits, 28);
-        if (sk == 0) {
-            service_kind = "Individual Voice Call Service";
-        } else if (sk == 1) {
-            service_kind = "Talkgroup Voice Call Service";
-        } else if (sk == 2) {
-            service_kind = "Individual Packet Data Call Service";
-        } else if (sk == 3) {
-            service_kind = "Packet Data Call Service to a talkgroup";
-        } else if (sk == 4) {
-            service_kind = "Individual Short Data Call Service";
-        } else if (sk == 5) {
-            service_kind = "Talkgroup Short Data Call Service";
-        } else if (sk == 6) {
-            service_kind = "Short Data Polling Service";
-        } else if (sk == 7) {
-            service_kind = "Status Transport Service";
-        } else if (sk == 8) {
-            service_kind = "Call Diversion Service";
-        } else if (sk == 9) {
-            service_kind = "Call Answer Service";
-        } else if (sk == 13) {
-            service_kind = "Supplementary Service";
-        } else if (sk == 14) {
-            service_kind = "Registration/Authentication Service/MS Radio Check";
-        } else if (sk == 15) {
-            service_kind = "Cancel Call Service";
-        } else {
-            service_kind = "Reserved";
+        switch (sk) {
+            case 0:
+                service_kind = "Individual Voice Call Service";
+                break;
+            case 1:
+                service_kind = "Talkgroup Voice Call Service";
+                break;
+            case 2:
+                service_kind = "Individual Packet Data Call Service";
+                break;
+            case 3:
+                service_kind = "Packet Data Call Service to a talkgroup";
+                break;
+            case 4:
+                service_kind = "Individual Short Data Call Service";
+                break;
+            case 5:
+                service_kind = "Talkgroup Short Data Call Service";
+                break;
+            case 6:
+                service_kind = "Short Data Polling Service";
+                break;
+            case 7:
+                service_kind = "Status Transport Service";
+                break;
+            case 8:
+                service_kind = "Call Diversion Service";
+                break;
+            case 9:
+                service_kind = "Call Answer Service";
+                break;
+            case 13:
+                service_kind = "Supplementary Service";
+                break;
+            case 14:
+                service_kind = "Registration/Authentication Service/MS Radio Check";
+                break;
+            case 15:
+                service_kind = "Cancel Call Service";
+                break;
+            default:
+                service_kind = "Reserved";
+                break;
         }
         // Target address
         int targetAddr = utils.retAddress(bits, 32);
@@ -799,28 +814,38 @@ public class CSBK {
             display[0] = display[0] + " : SKF=0";
         }
         sb1.append("Target : ");
-        if (targetAddr == 0xFFFECC) {
-            sb1.append("STUNI");
-        } else if (targetAddr == 0xFFFECF) {
-            sb1.append("KILLII");
-        } else if (targetAddr == 0xFFFECD) {
-            sb1.append("AUTHI");
-        } else {
-            sb1.append(Integer.toString(targetAddr));
+        switch (targetAddr) {
+            case 0xFFFECC:
+                sb1.append("STUNI");
+                break;
+            case 0xFFFECF:
+                sb1.append("KILLII");
+                break;
+            case 0xFFFECD:
+                sb1.append("AUTHI");
+                break;
+            default:
+                sb1.append(Integer.toString(targetAddr));
+                break;
         }
         if (ig == true) {
             sb1.append(" (TG)");
         }
         display[1] = sb1.toString();
         sb2.append("Source : ");
-        if (sourceAddr == 0xFFFECC) {
-            sb2.append("STUNI");
-        } else if (sourceAddr == 0xFFFECF) {
-            sb2.append("KILLII");
-        } else if (sourceAddr == 0xFFFECD) {
-            sb2.append("AUTHI");
-        } else {
-            sb2.append(Integer.toString(sourceAddr));
+        switch (sourceAddr) {
+            case 0xFFFECC:
+                sb2.append("STUNI");
+                break;
+            case 0xFFFECF:
+                sb2.append("KILLII");
+                break;
+            case 0xFFFECD:
+                sb2.append("AUTHI");
+                break;
+            default:
+                sb2.append(Integer.toString(sourceAddr));
+                break;
         }
         display[2] = sb2.toString();
         // Record this
@@ -884,17 +909,17 @@ public class CSBK {
             int bcast_ch2 = utils.retTwelve(bits, 68);
             // Display
             if (aw_flag1 == true) {
-                sb1.append("Withdraw BCAST_CH1 (Color Code " + Integer.toString(col_ch1) + ") from the hunt list : ");
+                sb1.append("Withdraw BCAST_CH1 (Color Code ").append(Integer.toString(col_ch1)).append(") from the hunt list : ");
             } else {
-                sb1.append("Add BCAST_CH1 (Color Code " + Integer.toString(col_ch1) + ") from the hunt list : ");
+                sb1.append("Add BCAST_CH1 (Color Code ").append(Integer.toString(col_ch1)).append(") from the hunt list : ");
             }
             if (aw_flag2 == true) {
-                sb1.append("Withdraw BCAST_CH2 (Color Code " + Integer.toString(col_ch2) + ") from the hunt list : ");
+                sb1.append("Withdraw BCAST_CH2 (Color Code ").append(Integer.toString(col_ch2)).append(") from the hunt list : ");
             } else {
-                sb1.append("Add BCAST_CH2 (Color Code " + Integer.toString(col_ch2) + ") from the hunt list : ");
+                sb1.append("Add BCAST_CH2 (Color Code ").append(Integer.toString(col_ch2)).append(") from the hunt list : ");
             }
-            sb2.append("BCAST_CH1=" + Integer.toString(bcast_ch1));
-            sb2.append(" : BCAST_CH2=" + Integer.toString(bcast_ch2));
+            sb2.append("BCAST_CH1=").append(Integer.toString(bcast_ch1));
+            sb2.append(" : BCAST_CH2=").append(Integer.toString(bcast_ch2));
             display[1] = sb1.toString();
             display[2] = sb2.toString();
         } else if (at == 1) {
@@ -913,22 +938,22 @@ public class CSBK {
             if (t_emerg_timer == 512) {
                 sb1.append("Emergency Call Timer is Infinity : ");
             } else {
-                sb1.append("T_EMERG_TIMER=" + Integer.toString(t_emerg_timer) + " : ");
+                sb1.append("T_EMERG_TIMER=").append(Integer.toString(t_emerg_timer)).append(" : ");
             }
             if (t_packet_timer == 31) {
                 sb1.append("Packet Call Timer is Infinity : ");
             } else {
-                sb1.append("T_PACKET_TIMER=" + Integer.toString(t_packet_timer) + " : ");
+                sb1.append("T_PACKET_TIMER=").append(Integer.toString(t_packet_timer)).append(" : ");
             }
             if (t_ms_ms_timer == 4095) {
                 sb1.append("MS to MS Call Timer is Infinity : ");
             } else {
-                sb1.append("T_MS-MS_TIMER=" + Integer.toString(t_ms_ms_timer) + " : ");
+                sb1.append("T_MS-MS_TIMER=").append(Integer.toString(t_ms_ms_timer)).append(" : ");
             }
             if (t_ms_line_timer == 4095) {
                 sb1.append("Line Connected Call Timer is Infinity");
             } else {
-                sb1.append("T_MS-LINE_TIMER=" + Integer.toString(t_ms_line_timer) + " : ");
+                sb1.append("T_MS-LINE_TIMER=").append(Integer.toString(t_ms_line_timer)).append(" : ");
             }
             display[1] = sb1.toString();
         } else if (at == 2) {
@@ -940,18 +965,23 @@ public class CSBK {
             // Bits 59,60,61,62,63,64 Reserved
             // Site_Strategy
             int site_strat = utils.retThree(bits, 65);
-            if (site_strat == 0) {
-                sb1.append("Radio Site : ");
-            } else if (site_strat == 1) {
-                sb1.append("Infill : ");
-            } else if (site_strat == 2) {
-                sb1.append("Manufacturer specific strategy : ");
-            } else {
-                sb1.append("Reserved : ");
+            switch (site_strat) {
+                case 0:
+                    sb1.append("Radio Site : ");
+                    break;
+                case 1:
+                    sb1.append("Infill : ");
+                    break;
+                case 2:
+                    sb1.append("Manufacturer specific strategy : ");
+                    break;
+                default:
+                    sb1.append("Reserved : ");
+                    break;
             }
             // CH_VOTE
             int ch_vote = utils.retTwelve(bits, 68);
-            sb1.append("CH_VOTE is " + Integer.toString(ch_vote));
+            sb1.append("CH_VOTE is ").append(Integer.toString(ch_vote));
             display[1] = sb1.toString();
         } else if (at == 3) {
             aType = "Local_Time (Broadcast Local Time)";
@@ -964,9 +994,9 @@ public class CSBK {
             int utc_offset = utils.retFive(bits, 30);
             // Check there is a date
             if ((b_day > 0) && (b_month > 0)) {
-                sb1.append("Date " + Integer.toString(b_day) + "/" + Integer.toString(b_month) + " ");
+                sb1.append("Date ").append(Integer.toString(b_day)).append("/").append(Integer.toString(b_month)).append(" ");
                 if (utc_offset == 31) {
-                    sb1.append("UTC Offset is " + Integer.toString(utc_offset) + " hours ");
+                    sb1.append("UTC Offset is ").append(Integer.toString(utc_offset)).append(" hours ");
                 }
             }
             // Parms 2
@@ -987,29 +1017,39 @@ public class CSBK {
                 utc_offset_fraction++;
             }
             // 76,77,78,79 Reserved
-            if (dayof_week == 1) {
-                sb1.append("Sunday ");
-            } else if (dayof_week == 2) {
-                sb1.append("Monday ");
-            } else if (dayof_week == 3) {
-                sb1.append("Tuesday ");
-            } else if (dayof_week == 4) {
-                sb1.append("Wednesday ");
-            } else if (dayof_week == 5) {
-                sb1.append("Thursday ");
-            } else if (dayof_week == 6) {
-                sb1.append("Friday ");
-            } else if (dayof_week == 7) {
-                sb1.append("Saturday ");
+            switch (dayof_week) {
+                case 1:
+                    sb1.append("Sunday ");
+                    break;
+                case 2:
+                    sb1.append("Monday ");
+                    break;
+                case 3:
+                    sb1.append("Tuesday ");
+                    break;
+                case 4:
+                    sb1.append("Wednesday ");
+                    break;
+                case 5:
+                    sb1.append("Thursday ");
+                    break;
+                case 6:
+                    sb1.append("Friday ");
+                    break;
+                case 7:
+                    sb1.append("Saturday ");
+                    break;
+                default:
+                    break;
             }
             if (b_hours < 10) {
                 sb1.append("0");
             }
-            sb1.append(Integer.toString(b_hours) + ":");
+            sb1.append(Integer.toString(b_hours)).append(":");
             if (b_mins < 10) {
                 sb1.append("0");
             }
-            sb1.append(Integer.toString(b_mins) + ":");
+            sb1.append(Integer.toString(b_mins)).append(":");
             if (b_secs < 10) {
                 sb1.append("0");
             }
@@ -1033,7 +1073,7 @@ public class CSBK {
             // Parms 2
             int ms_individual_address = utils.retAddress(bits, 26);
             // Display this
-            sb1.append("Reg_Window=" + Integer.toString(reg_window) + " : Aloha Mask=" + Integer.toString(aloha_mask) + " : MS Individual Address " + Integer.toString(ms_individual_address));
+            sb1.append("Reg_Window=").append(Integer.toString(reg_window)).append(" : Aloha Mask=").append(Integer.toString(aloha_mask)).append(" : MS Individual Address ").append(Integer.toString(ms_individual_address));
             display[1] = sb1.toString();
         } else if (at == 5) {
             aType = "Chan_Freq (Announce a logical channel/frequency relationship)";
@@ -1075,7 +1115,7 @@ public class CSBK {
             }
             // CH_ADJ
             int ch_adj = utils.retTwelve(bits, 68);
-            sb1.append("CH_ADJ " + Integer.toString(ch_adj));
+            sb1.append("CH_ADJ ").append(Integer.toString(ch_adj));
             display[1] = sb1.toString();
         } else if ((at == 30) || (at == 31)) {
             aType = "Manufacturer Specific (" + Integer.toString(at) + ")";
@@ -1139,15 +1179,15 @@ public class CSBK {
         } else {
             sb1.append("Service_Kind_Flag=0 : ");
         }
-        sb1.append("Appended_Blocks=" + Integer.toString(ablocks) + " : ");
-        sb1.append("Service_Kind=" + Integer.toString(service_kind));
+        sb1.append("Appended_Blocks=").append(Integer.toString(ablocks)).append(" : ");
+        sb1.append("Service_Kind=").append(Integer.toString(service_kind));
         display[1] = sb1.toString();
         // Target address
         int target = utils.retAddress(bits, 32);
         // Source address
         int source = utils.retAddress(bits, 56);
-        sb2.append("Target Address : " + Integer.toString(target));
-        sb2.append(" Source Address : " + Integer.toString(source));
+        sb2.append("Target Address : ").append(Integer.toString(target));
+        sb2.append(" Source Address : ").append(Integer.toString(source));
         display[2] = sb2.toString();
         // Log these users
         // Target
@@ -1173,7 +1213,7 @@ public class CSBK {
         int service_options = utils.retSeven(bits, 16);
         display[0] = "C_RAND : CSBKO=31 + FID=0 : Service_Options=" + Integer.toString(service_options);
         // Proxy Flag
-        boolean pf = bits[23];
+        boolean pfl = bits[23];
         // Appended_Supplementary_Data
         int asd = 0;
         if (bits[24] == true) {
@@ -1193,21 +1233,21 @@ public class CSBK {
         // Service_Kind
         int service_kind = utils.retFour(bits, 28);
         // Display this
-        if (pf == true) {
+        if (pfl == true) {
             sb1.append("Proxy Flag=1 : ");
         } else {
             sb1.append("Proxy Flag=0 : ");
         }
-        sb1.append("Appended_Supplementary_Data=" + Integer.toString(asd) + " : ");
-        sb1.append("Appended_Short_Data=" + Integer.toString(ashortd) + " : ");
-        sb1.append("Service_Kind=" + Integer.toString(service_kind));
+        sb1.append("Appended_Supplementary_Data=").append(Integer.toString(asd)).append(" : ");
+        sb1.append("Appended_Short_Data=").append(Integer.toString(ashortd)).append(" : ");
+        sb1.append("Service_Kind=").append(Integer.toString(service_kind));
         display[1] = sb1.toString();
         // Target address
         int target = utils.retAddress(bits, 32);
         // Source address
         int source = utils.retAddress(bits, 56);
-        sb2.append("Target Address : " + Integer.toString(target));
-        sb2.append(" Source Address : " + Integer.toString(source));
+        sb2.append("Target Address : ").append(Integer.toString(target));
+        sb2.append(" Source Address : ").append(Integer.toString(source));
         display[2] = sb2.toString();
         // Log these users
         // Target
@@ -1230,7 +1270,7 @@ public class CSBK {
         int from = utils.retAddress(bits, 56);
         StringBuilder sb1 = new StringBuilder(300);
         display[0] = "CSBK : CSBKO=31 + FID=16";
-        sb1.append("Call Alert from " + Integer.toString(from) + " to " + Integer.toString(to) + " (");
+        sb1.append("Call Alert from ").append(Integer.toString(from)).append(" to ").append(Integer.toString(to)).append(" (");
         // Also display the unknown part as raw binary for now
         for (a = 16; a < 32; a++) {
             if (bits[a] == true) {
@@ -1260,14 +1300,21 @@ public class CSBK {
         // Reason Code
         int reason_code = utils.retEight(bits, 23);
         int rc_t = (reason_code & 192) >> 6;
-        if (rc_t == 0) {
-            sb1.append("NACK : ");
-        } else if (rc_t == 1) {
-            sb1.append("ACK : ");
-        } else if (rc_t == 2) {
-            sb1.append("QACK : ");
-        } else if (rc_t == 3) {
-            sb1.append("WACK : ");
+        switch (rc_t) {
+            case 0:
+                sb1.append("NACK : ");
+                break;
+            case 1:
+                sb1.append("ACK : ");
+                break;
+            case 2:
+                sb1.append("QACK : ");
+                break;
+            case 3:
+                sb1.append("WACK : ");
+                break;
+            default:
+                break;
         }
         if ((reason_code & 32) > 0) {
             sb1.append("TS to MS : ");
@@ -1281,8 +1328,8 @@ public class CSBK {
         int target = utils.retAddress(bits, 32);
         // Source address
         int source = utils.retAddress(bits, 56);
-        sb2.append("Target Address : " + Integer.toString(target));
-        sb2.append(" Source Address : " + Integer.toString(source));
+        sb2.append("Target Address : ").append(Integer.toString(target));
+        sb2.append(" Source Address : ").append(Integer.toString(source));
         display[2] = sb2.toString();
         // Log these users
         // Target
@@ -1305,7 +1352,7 @@ public class CSBK {
         int from = utils.retAddress(bits, 56);
         StringBuilder sb1 = new StringBuilder(300);
         display[0] = "CSBK : CSBKO=32 + FID=16";
-        sb1.append("Call Alert ACK from " + Integer.toString(from) + " to " + Integer.toString(to) + " (");
+        sb1.append("Call Alert ACK from ").append(Integer.toString(from)).append(" to ").append(Integer.toString(to)).append(" (");
         // Also display the unknown part as raw binary for now
         for (a = 16; a < 32; a++) {
             if (bits[a] == true) {
@@ -1335,14 +1382,21 @@ public class CSBK {
         // Reason Code
         int reason_code = utils.retEight(bits, 23);
         int rc_t = (reason_code & 192) >> 6;
-        if (rc_t == 0) {
-            sb1.append("NACK : ");
-        } else if (rc_t == 1) {
-            sb1.append("ACK : ");
-        } else if (rc_t == 2) {
-            sb1.append("QACK : ");
-        } else if (rc_t == 3) {
-            sb1.append("WACK : ");
+        switch (rc_t) {
+            case 0:
+                sb1.append("NACK : ");
+                break;
+            case 1:
+                sb1.append("ACK : ");
+                break;
+            case 2:
+                sb1.append("QACK : ");
+                break;
+            case 3:
+                sb1.append("WACK : ");
+                break;
+            default:
+                break;
         }
         if ((reason_code & 32) > 0) {
             sb1.append("TS to MS : ");
@@ -1356,8 +1410,8 @@ public class CSBK {
         int target = utils.retAddress(bits, 32);
         // Source address
         int source = utils.retAddress(bits, 56);
-        sb2.append("Target Address : " + Integer.toString(target));
-        sb2.append(" Source Address : " + Integer.toString(source));
+        sb2.append("Target Address : ").append(Integer.toString(target));
+        sb2.append(" Source Address : ").append(Integer.toString(source));
         display[2] = sb2.toString();
         // Log these users
         // Target
@@ -1374,7 +1428,7 @@ public class CSBK {
         int to = utils.retAddress(bits, 56);
         StringBuilder sb1 = new StringBuilder(300);
         display[0] = "CSBK : CSBKO=36 + FID=16";
-        sb1.append("Radio Check from " + Integer.toString(from) + " to " + Integer.toString(to) + " (");
+        sb1.append("Radio Check from ").append(Integer.toString(from)).append(" to ").append(Integer.toString(to)).append(" (");
         // Also display the unknown part as raw binary for now
         for (a = 16; a < 32; a++) {
             if (bits[a] == true) {
@@ -1410,8 +1464,8 @@ public class CSBK {
         int target = utils.retAddress(bits, 32);
         // Source address
         int source = utils.retAddress(bits, 56);
-        sb1.append("Target Address : " + Integer.toString(target));
-        sb1.append(" Source Address : " + Integer.toString(source));
+        sb1.append("Target Address : ").append(Integer.toString(target));
+        sb1.append(" Source Address : ").append(Integer.toString(source));
         display[1] = sb1.toString();
         // Log these users
         // Target
@@ -1435,7 +1489,7 @@ public class CSBK {
         if (bits[17] == true) {
             fl++;
         }
-        sb1.append("FL=" + Integer.toString(fl));
+        sb1.append("FL=").append(Integer.toString(fl));
         // Bit 18 slot
         if (bits[18] == false) {
             sb1.append(" : TS1");
@@ -1455,7 +1509,7 @@ public class CSBK {
         } else if (bits[23] == true) {
             restCh++;
         }
-        sb1.append(" : Rest Channel ID " + Integer.toString(restCh));
+        sb1.append(" : Rest Channel ID ").append(Integer.toString(restCh));
         // Bit 24 ASYNC
         if (bits[24] == false) {
             sb1.append(" : Periodic Beacons");
@@ -1476,7 +1530,7 @@ public class CSBK {
         if (bits[28] == true) {
             mySiteID++;
         }
-        sb1.append(" : This Site ID " + Integer.toString(mySiteID));
+        sb1.append(" : This Site ID ").append(Integer.toString(mySiteID));
         // Display this
         display[1] = sb1.toString();
         // Bits 29.30,31 Number of neighbour sites
@@ -1504,7 +1558,7 @@ public class CSBK {
             if (a > 0) {
                 sb2.append(",");
             }
-            sb2.append("Site #" + Integer.toString(a + 1) + " ID " + Integer.toString(nsid) + " Rest Ch " + Integer.toString(nrst));
+            sb2.append("Site #").append(Integer.toString(a + 1)).append(" ID ").append(Integer.toString(nsid)).append(" Rest Ch ").append(Integer.toString(nrst));
             // Move along
             pos = pos + 8;
         }
@@ -1522,7 +1576,6 @@ public class CSBK {
     // 32 - 55 Target Address
     // 56 - 79 Source Address
     private void csbko46fid0(DMRDecode theApp, boolean bits[]) {
-        int index;
         Utilities utils = new Utilities();
         StringBuilder sb1 = new StringBuilder(250);
         StringBuilder sb2 = new StringBuilder(250);
@@ -1548,14 +1601,15 @@ public class CSBK {
         display[1] = sb1.toString();
         // Source Address
         int sourceAddr = utils.retAddress(bits, 56);
-        sb2.append("Source Address " + Integer.toString(sourceAddr));
+        sb2.append("Source Address ").append(Integer.toString(sourceAddr));
         display[2] = sb2.toString();
         // Record this
         // Log these users
         // Target
         if (targetAddr != 0xFFFED4) {
             theApp.usersLogged.addUser(targetAddr);
-            index = theApp.usersLogged.findUserIndex(targetAddr);
+            int index = theApp.usersLogged.findUserIndex(targetAddr);
+
             if (index != -1) {
                 if (ig == true) {
                     theApp.usersLogged.setAsGroup(index);
@@ -1565,7 +1619,7 @@ public class CSBK {
         }
         // Source
         theApp.usersLogged.addUser(sourceAddr);
-        index = theApp.usersLogged.findUserIndex(sourceAddr);
+
         // Quick log
         if (theApp.isQuickLog() == true) {
             theApp.quickLogData("P_CLEAR", targetAddr, sourceAddr, lochan, "");
@@ -1580,21 +1634,25 @@ public class CSBK {
     // 32 - 55 Target Address
     // 56 - 79 Source Address
     private void csbko47fid0(DMRDecode theApp, boolean bits[]) {
-        int index;
         Utilities utils = new Utilities();
         StringBuilder sb1 = new StringBuilder(250);
         StringBuilder sb2 = new StringBuilder(250);
         // Protect_Kind
         String protect_kind;
         int pk = utils.retThree(bits, 28);
-        if (pk == 0) {
-            protect_kind = "DIS_PTT (Disable Target MS or Talkgroup transmission)";
-        } else if (pk == 1) {
-            protect_kind = "EN_PTT (Enable Target MS or Talkgroup transmission)";
-        } else if (pk == 2) {
-            protect_kind = "ILLEGALLY_PARKED (Clear down from the payload channel, MS whose address does not match Source or Target Address)";
-        } else {
-            protect_kind = "Reserved";
+        switch (pk) {
+            case 0:
+                protect_kind = "DIS_PTT (Disable Target MS or Talkgroup transmission)";
+                break;
+            case 1:
+                protect_kind = "EN_PTT (Enable Target MS or Talkgroup transmission)";
+                break;
+            case 2:
+                protect_kind = "ILLEGALLY_PARKED (Clear down from the payload channel, MS whose address does not match Source or Target Address)";
+                break;
+            default:
+                protect_kind = "Reserved";
+                break;
         }
         display[0] = "P_PROTECT : CSBKO=47 + FID=0 : " + protect_kind;
         // IG
@@ -1616,14 +1674,15 @@ public class CSBK {
         display[1] = sb1.toString();
         // Source Address
         int sourceAddr = utils.retAddress(bits, 56);
-        sb2.append("Source Address " + Integer.toString(sourceAddr));
+        sb2.append("Source Address ").append(Integer.toString(sourceAddr));
         display[2] = sb2.toString();
         // Record this
         // Log these users
         // Target
         if (targetAddr != 0xFFFED4) {
             theApp.usersLogged.addUser(targetAddr);
-            index = theApp.usersLogged.findUserIndex(targetAddr);
+            int index = theApp.usersLogged.findUserIndex(targetAddr);
+
             if (index != -1) {
                 if (ig == true) {
                     theApp.usersLogged.setAsGroup(index);
@@ -1632,7 +1691,7 @@ public class CSBK {
         }
         // Source
         theApp.usersLogged.addUser(sourceAddr);
-        index = theApp.usersLogged.findUserIndex(sourceAddr);
+
         // Quick log
         if (theApp.isQuickLog() == true) {
             theApp.quickLogData("P_PROTECT", targetAddr, sourceAddr, 0, protect_kind);
@@ -1656,7 +1715,7 @@ public class CSBK {
         display[0] = "Private Voice Channel Grant : CSBKO=48 + FID=0";
         // Logical Physical Channel Number
         int lchannel = utils.retTwelve(bits, 16);
-        sb1.append("Payload Channel " + Integer.toString(lchannel));
+        sb1.append("Payload Channel ").append(Integer.toString(lchannel));
         if (bits[28] == false) {
             sb1.append(" TDMA ch1 ");
         } else {
@@ -1678,8 +1737,8 @@ public class CSBK {
         int target = utils.retAddress(bits, 32);
         // Source address
         int source = utils.retAddress(bits, 56);
-        sb2.append("Target Address : " + Integer.toString(target));
-        sb2.append(" Source Address : " + Integer.toString(source));
+        sb2.append("Target Address : ").append(Integer.toString(target));
+        sb2.append(" Source Address : ").append(Integer.toString(source));
         display[2] = sb2.toString();
         // Log these users
         // Target
@@ -1724,13 +1783,14 @@ public class CSBK {
     // 56 - 79 Source Address
     private void csbko49fid0(DMRDecode theApp, boolean bits[]) {
         int index;
+
         Utilities utils = new Utilities();
         StringBuilder sb1 = new StringBuilder(250);
         StringBuilder sb2 = new StringBuilder(250);
         display[0] = "Talkgroup Voice Channel Grant : CSBKO=49 + FID=0";
         // Logical Physical Channel Number
         int lchannel = utils.retTwelve(bits, 16);
-        sb1.append("Payload Channel " + Integer.toString(lchannel));
+        sb1.append("Payload Channel ").append(Integer.toString(lchannel));
         if (bits[28] == false) {
             sb1.append(" TDMA ch1 ");
         } else {
@@ -1752,13 +1812,14 @@ public class CSBK {
         int target = utils.retAddress(bits, 32);
         // Source address
         int source = utils.retAddress(bits, 56);
-        sb2.append("Target Address : " + Integer.toString(target));
-        sb2.append(" Source Address : " + Integer.toString(source));
+        sb2.append("Target Address : ").append(Integer.toString(target));
+        sb2.append(" Source Address : ").append(Integer.toString(source));
         display[2] = sb2.toString();
         // Log these users
         // Target
         theApp.usersLogged.addUser(target);
         index = theApp.usersLogged.findUserIndex(target);
+
         if (index != -1) {
             theApp.usersLogged.setAsGroup(index);
             theApp.usersLogged.setChannel(index, lchannel);
@@ -1804,7 +1865,7 @@ public class CSBK {
         display[0] = "Broadcast Talkgroup Voice Channel Grant : CSBKO=50 + FID=0";
         // Logical Physical Channel Number
         int lchannel = utils.retTwelve(bits, 16);
-        sb1.append("Payload Channel " + Integer.toString(lchannel));
+        sb1.append("Payload Channel ").append(Integer.toString(lchannel));
         if (bits[28] == false) {
             sb1.append(" TDMA ch1 ");
         } else {
@@ -1826,8 +1887,9 @@ public class CSBK {
         int target = utils.retAddress(bits, 32);
         // Source address
         int source = utils.retAddress(bits, 56);
-        sb2.append("Target Address : " + Integer.toString(target));
-        sb2.append(" Source Address : " + Integer.toString(source));
+        sb2.append("Target Address : ").append(Integer.toString(target));
+        sb2.append(" Source Address : ").append(Integer.toString(source));
+
         display[2] = sb2.toString();
         // Log these users
         // Target
@@ -1878,7 +1940,7 @@ public class CSBK {
         display[0] = "Private Data Channel Grant : CSBKO=51 + FID=0";
         // Logical Physical Channel Number
         int lchannel = utils.retTwelve(bits, 16);
-        sb1.append("Payload Channel " + Integer.toString(lchannel));
+        sb1.append("Payload Channel ").append(Integer.toString(lchannel));
         if (bits[28] == false) {
             sb1.append(" TDMA ch1 ");
         } else {
@@ -1902,8 +1964,8 @@ public class CSBK {
         int target = utils.retAddress(bits, 32);
         // Source address
         int source = utils.retAddress(bits, 56);
-        sb2.append("Target Address : " + Integer.toString(target));
-        sb2.append(" Source Address : " + Integer.toString(source));
+        sb2.append("Target Address : ").append(Integer.toString(target));
+        sb2.append(" Source Address : ").append(Integer.toString(source));
         display[2] = sb2.toString();
         // Log these users
         // Target
@@ -1954,7 +2016,7 @@ public class CSBK {
         display[0] = "Talkgroup Data Channel Grant : CSBKO=52 + FID=0";
         // Logical Physical Channel Number
         int lchannel = utils.retTwelve(bits, 16);
-        sb1.append("Payload Channel " + Integer.toString(lchannel));
+        sb1.append("Payload Channel ").append(Integer.toString(lchannel));
         if (bits[28] == false) {
             sb1.append(" TDMA ch1 ");
         } else {
@@ -1978,8 +2040,8 @@ public class CSBK {
         int target = utils.retAddress(bits, 32);
         // Source address
         int source = utils.retAddress(bits, 56);
-        sb2.append("Target Address : " + Integer.toString(target));
-        sb2.append(" Source Address : " + Integer.toString(source));
+        sb2.append("Target Address : ").append(Integer.toString(target));
+        sb2.append(" Source Address : ").append(Integer.toString(source));
         display[2] = sb2.toString();
         // Log these users
         // Target
@@ -2030,102 +2092,115 @@ public class CSBK {
         display[0] = "C_MOVE : CSBKO=57 + FID=0";
         // Mask
         int mask = utils.retFive(bits, 25);
-        sb1.append("Mask=" + Integer.toString(mask) + " : ");
+        sb1.append("Mask=").append(Integer.toString(mask)).append(" : ");
         // Reg
         if (bits[35] == true) {
             sb1.append("TSCC demands MS must register : ");
         }
         // Backoff
         int backoff = utils.retFour(bits, 36);
-        sb1.append("Backoff=" + Integer.toString(backoff));
+        sb1.append("Backoff=").append(Integer.toString(backoff));
         display[1] = sb1.toString();
         // Physical Channel Number
         int chanNo = utils.retTwelve(bits, 44);
-        sb2.append("Physical Channel Number " + Integer.toString(chanNo) + " : ");
+        sb2.append("Physical Channel Number ").append(Integer.toString(chanNo)).append(" : ");
         // MS Individual Address
         int msi = utils.retAddress(bits, 56);
-        sb2.append("MS Individual Address " + Integer.toString(msi));
+        sb2.append("MS Individual Address ").append(Integer.toString(msi));
         display[2] = sb2.toString();
     }
 
     // Return a ACK reason string
     private String getAckReason(int ack_type, int ack_num) {
         // ACK
-        if (ack_type == 1) {
-            if (ack_num == 0b01100000) {
-                return "Message_Accepted";
-            } else if (ack_num == 0b01100001) {
-                return "Store_Forward";
-            } else if (ack_num == 0b01100010) {
-                return "Reg_Accepted";
-            } else if (ack_num == 0b01100011) {
-                return "Accepted for the Status Polling Service";
-            } else if (ack_num == 0b01000100) {
-                return "MS_Accepted";
-            } else if (ack_num == 0b01000101) {
-                return "CallBack";
-            } else if (ack_num == 0b01000110) {
-                return "MS_ALERTING";
-            } else if (ack_num == 0b01000111) {
-                return "Accepted for the Status Polling Service";
-            }
-        } // NACK
-        else if (ack_type == 0) {
-            if (ack_num == 0b00100000) {
-                return "Not_Supported";
-            } else if (ack_num == 0b00100001) {
-                return "Perm_User_Refused";
-            } else if (ack_num == 0b00100010) {
-                return "Temp_User_Refused";
-            } else if (ack_num == 0b00100011) {
-                return "Transient_Sys_Refused";
-            } else if (ack_num == 0b00100100) {
-                return "NoregMSaway_Refused";
-            } else if (ack_num == 0b00100101) {
-                return "MSaway_Refused";
-            } else if (ack_num == 0b00100110) {
-                return "Div_Cause_Fail";
-            } else if (ack_num == 0b00100111) {
-                return "SYSbusy_Refused";
-            } else if (ack_num == 0b00101000) {
-                return "SYS_NotReady";
-            } else if (ack_num == 0b00101001) {
-                return "Call_Cancel_Refused";
-            } else if (ack_num == 0b00101010) {
-                return "Reg_Refused";
-            } else if (ack_num == 0b00101011) {
-                return "Reg_Denied";
-            } else if (ack_num == 0b00101100) {
-                return "IP_Connection_failed";
-            } else if (ack_num == 0b00101101) {
-                return "MS_Not_Registered";
-            } else if (ack_num == 0b00101110) {
-                return "Called_Party_Busy";
-            } else if (ack_num == 0b00000000) {
-                return "MSNot_Supported";
-            } else if (ack_num == 0b00010001) {
-                return "LineNot_Supported";
-            } else if (ack_num == 0b00010010) {
-                return "StackFull_Refused";
-            } else if (ack_num == 0b00010011) {
-                return "EuipBusy_Refused";
-            } else if (ack_num == 0b00010100) {
-                return "Recipient_Refused";
-            } else if (ack_num == 0b00010101) {
-                return "Custom_Refused";
-            }
-        } // QACK
-        else if (ack_type == 2) {
-            if (ack_num == 0b10100000) {
-                return "Queued-for-resource";
-            } else if (ack_num == 0b10100001) {
-                return "Queued-for-busy";
-            }
-        } // WACK
-        else if (ack_type == 3) {
-            if (ack_num == 0b11100000) {
-                return "Wait";
-            }
+        switch (ack_type) {
+            // NACK
+            case 1:
+                switch (ack_num) {
+                    case 0b01100000:
+                        return "Message_Accepted";
+                    case 0b01100001:
+                        return "Store_Forward";
+                    case 0b01100010:
+                        return "Reg_Accepted";
+                    case 0b01100011:
+                        return "Accepted for the Status Polling Service";
+                    case 0b01000100:
+                        return "MS_Accepted";
+                    case 0b01000101:
+                        return "CallBack";
+                    case 0b01000110:
+                        return "MS_ALERTING";
+                    case 0b01000111:
+                        return "Accepted for the Status Polling Service";
+                    default:
+                        break;
+                }
+                break;
+            // QACK
+            case 0:
+                switch (ack_num) {
+                    case 0b00100000:
+                        return "Not_Supported";
+                    case 0b00100001:
+                        return "Perm_User_Refused";
+                    case 0b00100010:
+                        return "Temp_User_Refused";
+                    case 0b00100011:
+                        return "Transient_Sys_Refused";
+                    case 0b00100100:
+                        return "NoregMSaway_Refused";
+                    case 0b00100101:
+                        return "MSaway_Refused";
+                    case 0b00100110:
+                        return "Div_Cause_Fail";
+                    case 0b00100111:
+                        return "SYSbusy_Refused";
+                    case 0b00101000:
+                        return "SYS_NotReady";
+                    case 0b00101001:
+                        return "Call_Cancel_Refused";
+                    case 0b00101010:
+                        return "Reg_Refused";
+                    case 0b00101011:
+                        return "Reg_Denied";
+                    case 0b00101100:
+                        return "IP_Connection_failed";
+                    case 0b00101101:
+                        return "MS_Not_Registered";
+                    case 0b00101110:
+                        return "Called_Party_Busy";
+                    case 0b00000000:
+                        return "MSNot_Supported";
+                    case 0b00010001:
+                        return "LineNot_Supported";
+                    case 0b00010010:
+                        return "StackFull_Refused";
+                    case 0b00010011:
+                        return "EuipBusy_Refused";
+                    case 0b00010100:
+                        return "Recipient_Refused";
+                    case 0b00010101:
+                        return "Custom_Refused";
+                    default:
+                        break;
+                }
+                break;
+            // WACK
+            case 2:
+                if (ack_num == 0b10100000) {
+                    return "Queued-for-resource";
+                } else if (ack_num == 0b10100001) {
+                    return "Queued-for-busy";
+                }
+                break;
+            case 3:
+                if (ack_num == 0b11100000) {
+                    return "Wait";
+                }
+                break;
+            default:
+                break;
         }
         return "Unknown (at=" + Integer.toString(ack_type) + " + ack_num=" + Integer.toString(ack_num) + ")";
     }

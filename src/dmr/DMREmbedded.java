@@ -57,11 +57,7 @@ public class DMREmbedded {
 
     // Has there been an error
     public boolean isError() {
-        if ((resCACH == false) || (resEMB == false)) {
-            return false;
-        } else {
-            return true;
-        }
+        return !((resCACH == false) || (resEMB == false));
     }
 
     // Error check and decode the EMB
@@ -74,34 +70,48 @@ public class DMREmbedded {
         // these need reuniting into a single 20 bit boolean array
         r = 0;
         for (a = 66; a < 70; a++) {
-            if (dibit_buf[a] == 0) {
-                EMDdata[r] = false;
-                EMDdata[r + 1] = false;
-            } else if (dibit_buf[a] == 1) {
-                EMDdata[r] = false;
-                EMDdata[r + 1] = true;
-            } else if (dibit_buf[a] == 2) {
-                EMDdata[r] = true;
-                EMDdata[r + 1] = false;
-            } else if (dibit_buf[a] == 3) {
-                EMDdata[r] = true;
-                EMDdata[r + 1] = true;
+            switch (dibit_buf[a]) {
+                case 0:
+                    EMDdata[r] = false;
+                    EMDdata[r + 1] = false;
+                    break;
+                case 1:
+                    EMDdata[r] = false;
+                    EMDdata[r + 1] = true;
+                    break;
+                case 2:
+                    EMDdata[r] = true;
+                    EMDdata[r + 1] = false;
+                    break;
+                case 3:
+                    EMDdata[r] = true;
+                    EMDdata[r + 1] = true;
+                    break;
+                default:
+                    break;
             }
             r = r + 2;
         }
         for (a = 86; a < 90; a++) {
-            if (dibit_buf[a] == 0) {
-                EMDdata[r] = false;
-                EMDdata[r + 1] = false;
-            } else if (dibit_buf[a] == 1) {
-                EMDdata[r] = false;
-                EMDdata[r + 1] = true;
-            } else if (dibit_buf[a] == 2) {
-                EMDdata[r] = true;
-                EMDdata[r + 1] = false;
-            } else if (dibit_buf[a] == 3) {
-                EMDdata[r] = true;
-                EMDdata[r + 1] = true;
+            switch (dibit_buf[a]) {
+                case 0:
+                    EMDdata[r] = false;
+                    EMDdata[r + 1] = false;
+                    break;
+                case 1:
+                    EMDdata[r] = false;
+                    EMDdata[r + 1] = true;
+                    break;
+                case 2:
+                    EMDdata[r] = true;
+                    EMDdata[r + 1] = false;
+                    break;
+                case 3:
+                    EMDdata[r] = true;
+                    EMDdata[r + 1] = true;
+                    break;
+                default:
+                    break;
             }
             r = r + 2;
         }
@@ -143,20 +153,27 @@ public class DMREmbedded {
                 lcss++;
             }
             // Display the colour code
-            sb.append("EMB : Color Code " + Integer.toString(cc));
+            sb.append("EMB : Color Code ").append(Integer.toString(cc));
             // PI
             if (pi == true) {
                 sb.append(" : PI=1");
             }
             // LCSS
-            if (lcss == 0) {
-                sb.append(" : Single fragment LC ");
-            } else if (lcss == 1) {
-                sb.append(" : First fragment of LC ");
-            } else if (lcss == 2) {
-                sb.append(" : Last fragment of LC");
-            } else if (lcss == 3) {
-                sb.append(" : Continuation fragment of LC");
+            switch (lcss) {
+                case 0:
+                    sb.append(" : Single fragment LC ");
+                    break;
+                case 1:
+                    sb.append(" : First fragment of LC ");
+                    break;
+                case 2:
+                    sb.append(" : Last fragment of LC");
+                    break;
+                case 3:
+                    sb.append(" : Continuation fragment of LC");
+                    break;
+                default:
+                    break;
             }
             line[2] = sb.toString();
             // Add this to the embedded data class
@@ -348,11 +365,7 @@ public class DMREmbedded {
                     }
                 }
             }
-            if ((SLOT_TYPEres == true) && (BPTCres == true)) {
-                return true;
-            } else {
-                return false;
-            }
+            return (SLOT_TYPEres == true) && (BPTCres == true);
         }
     }
 
@@ -365,41 +378,13 @@ public class DMREmbedded {
         // Run through all possible 7 bit values
         for (a = 0; a < 128; a++) {
             // Convert to binary
-            if ((a & 64) > 0) {
-                d[0] = true;
-            } else {
-                d[0] = false;
-            }
-            if ((a & 32) > 0) {
-                d[1] = true;
-            } else {
-                d[1] = false;
-            }
-            if ((a & 16) > 0) {
-                d[2] = true;
-            } else {
-                d[2] = false;
-            }
-            if ((a & 8) > 0) {
-                d[3] = true;
-            } else {
-                d[3] = false;
-            }
-            if ((a & 4) > 0) {
-                d[4] = true;
-            } else {
-                d[4] = false;
-            }
-            if ((a & 2) > 0) {
-                d[5] = true;
-            } else {
-                d[5] = false;
-            }
-            if ((a & 1) > 0) {
-                d[6] = true;
-            } else {
-                d[6] = false;
-            }
+            d[0] = (a & 64) > 0;
+            d[1] = (a & 32) > 0;
+            d[2] = (a & 16) > 0;
+            d[3] = (a & 8) > 0;
+            d[4] = (a & 4) > 0;
+            d[5] = (a & 2) > 0;
+            d[6] = (a & 1) > 0;
             // Shift the value 9 times to the left
             value[a] = a << 9;
             // Calculate the parity bits

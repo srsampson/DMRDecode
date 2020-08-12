@@ -28,6 +28,8 @@ import java.util.ArrayList;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Line;
 import javax.sound.sampled.Mixer;
+import javax.xml.parsers.ParserConfigurationException;
+import org.xml.sax.SAXException;
 
 public class DisplayFrame extends JFrame implements ActionListener {
 
@@ -117,7 +119,7 @@ public class DisplayFrame extends JFrame implements ActionListener {
             theApp.readDefaultSettings();
             // Update the menus
             menuItemUpdate();
-        } catch (Exception e) {
+        } catch (IOException | ParserConfigurationException | SAXException e) {
             String err = e.toString();
             // Can't find the default settings file //
             System.out.println("\nInformative : Unable to read the file DMRDecode_settings.xml " + err);
@@ -128,6 +130,7 @@ public class DisplayFrame extends JFrame implements ActionListener {
     // Handle messages from the scrollbars
     class MyAdjustmentListener implements AdjustmentListener {
 
+        @Override
         public void adjustmentValueChanged(AdjustmentEvent e) {
             // Vertical scrollbar
             if (e.getSource() == vscrollbar) {
@@ -139,11 +142,12 @@ public class DisplayFrame extends JFrame implements ActionListener {
     }
 
     // Handle all menu events
+    @Override
     public void actionPerformed(ActionEvent event) {
         String event_name = event.getActionCommand();
 
         // Capture
-        if (event_name == "Capture") {
+        if ("Capture".equals(event_name)) {
             if (theApp.isCapture() == false) {
                 theApp.setCapture(true);
             } else {
@@ -152,17 +156,17 @@ public class DisplayFrame extends JFrame implements ActionListener {
         }
 
         // Clear Screen
-        if (event_name == "Clear Screen") {
+        if ("Clear Screen".equals(event_name)) {
             theApp.clearScreen();
         }
 
         // Copy to the clip board
-        if (event_name == "Copy All to the Clipboard") {
+        if ("Copy All to the Clipboard".equals(event_name)) {
             setClipboard(theApp.getAllText());
         }
 
         // Debug Mode
-        if (event_name == "Debug Mode") {
+        if ("Debug Mode".equals(event_name)) {
             if (theApp.isDebug() == false) {
                 theApp.setDebug(true);
             } else {
@@ -171,16 +175,12 @@ public class DisplayFrame extends JFrame implements ActionListener {
         }
 
         // Invert signal
-        if (event_name == "Invert Signal") {
-            if (theApp.inverted == false) {
-                theApp.inverted = true;
-            } else {
-                theApp.inverted = false;
-            }
+        if ("Invert Signal".equals(event_name)) {
+            theApp.inverted = theApp.inverted == false;
         }
 
         // Quick Log
-        if (event_name == "Quick Log") {
+        if ("Quick Log".equals(event_name)) {
             if (theApp.isQuickLog() == false) {
                 quickLogDialogBox();
             } else {
@@ -189,7 +189,7 @@ public class DisplayFrame extends JFrame implements ActionListener {
         }
 
         // Save to File
-        if (event_name == "Save to File") {
+        if ("Save to File".equals(event_name)) {
             if (theApp.getLogging() == false) {
                 if (saveDialogBox() == false) {
                     // Restart the audio in thread
@@ -207,28 +207,24 @@ public class DisplayFrame extends JFrame implements ActionListener {
         }
 
         // Save the current settings
-        if (event_name == "Save Settings") {
+        if ("Save Settings".equals(event_name)) {
             theApp.saveCurrentSettings();
         }
 
         // Error rate info
-        if (event_name == "Error Check Info") {
+        if ("Error Check Info".equals(event_name)) {
             errorDialogBox();
         }
 
         // Enable/Disable the symbol display
-        if (event_name == "Enable Symbol Display") {
+        if ("Enable Symbol Display".equals(event_name)) {
             boolean estate = theApp.isEnableDisplayBar();
-            if (estate == true) {
-                estate = false;
-            } else {
-                estate = true;
-            }
+            estate = estate != true;
             theApp.setEnableDisplayBar(estate);
         }
 
         // Exit
-        if (event_name == "Exit") {
+        if ("Exit".equals(event_name)) {
             // If logging close the file
             if (theApp.getLogging() == true) {
                 closeLogFile();
@@ -240,7 +236,7 @@ public class DisplayFrame extends JFrame implements ActionListener {
         }
 
         // Display CACH
-        if (event_name == "Display CACH") {
+        if ("Display CACH".equals(event_name)) {
             if (theApp.isDisplayCACH() == true) {
                 theApp.setDisplayCACH(false);
             } else {
@@ -257,7 +253,7 @@ public class DisplayFrame extends JFrame implements ActionListener {
         }
 
         // Display Idle PDU
-        if (event_name == "Display Idle PDU") {
+        if ("Display Idle PDU".equals(event_name)) {
             if (theApp.isDisplayIdlePDU() == true) {
                 theApp.setDisplayIdlePDU(false);
             } else {
@@ -274,7 +270,7 @@ public class DisplayFrame extends JFrame implements ActionListener {
         }
 
         // Display only good frames
-        if (event_name == "Display Good Frames Only") {
+        if ("Display Good Frames Only".equals(event_name)) {
             if (theApp.isDisplayOnlyGoodFrames() == true) {
                 theApp.setDisplayOnlyGoodFrames(false);
             } else {
@@ -292,7 +288,7 @@ public class DisplayFrame extends JFrame implements ActionListener {
         }
 
         // Display Voice Frames
-        if (event_name == "Display Voice Frames") {
+        if ("Display Voice Frames".equals(event_name)) {
             if (theApp.isDisplayVoiceFrames() == true) {
                 theApp.setDisplayVoiceFrames(false);
             } else {
@@ -414,7 +410,7 @@ public class DisplayFrame extends JFrame implements ActionListener {
                 theApp.file.write("You have selected not to display voice frames\r\n");
             }
 
-        } catch (Exception e) {
+        } catch (IOException e) {
             System.out.println("\nError opening the logging file");
             return false;
         }
@@ -448,7 +444,7 @@ public class DisplayFrame extends JFrame implements ActionListener {
             // Close the file
             theApp.file.flush();
             theApp.file.close();
-        } catch (Exception e) {
+        } catch (IOException e) {
             JOptionPane.showMessageDialog(null, "Error closing Log file", "DMRDecode", JOptionPane.INFORMATION_MESSAGE);
         }
     }
@@ -519,7 +515,7 @@ public class DisplayFrame extends JFrame implements ActionListener {
             // If append==true then the data written is appended to this file
             theApp.quickLogFile = new FileWriter(tfile, append);
 
-        } catch (Exception e) {
+        } catch (IOException e) {
             System.out.println("\nError opening the quick log file");
             return false;
         }
@@ -532,7 +528,7 @@ public class DisplayFrame extends JFrame implements ActionListener {
             // Close the file
             theApp.quickLogFile.flush();
             theApp.quickLogFile.close();
-        } catch (Exception e) {
+        } catch (IOException e) {
             JOptionPane.showMessageDialog(null, "Error closing Quick Log file", "DMRDecode", JOptionPane.INFORMATION_MESSAGE);
         }
         theApp.setQuickLog(false);
@@ -612,7 +608,7 @@ public class DisplayFrame extends JFrame implements ActionListener {
     }
 
     private ArrayList<AudioMixer> getCompatibleDevices() {
-        devices = new ArrayList<AudioMixer>();
+        devices = new ArrayList<>();
         //list the available mixers
         Mixer.Info mixers[] = AudioSystem.getMixerInfo();
         int i;

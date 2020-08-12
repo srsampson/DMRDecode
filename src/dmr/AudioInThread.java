@@ -6,17 +6,24 @@ import java.io.PipedOutputStream;
 
 public class AudioInThread implements Runnable {
 
+    private static final int ISIZE = 256;
+    private static final int VOLUMEBUFFERSIZE = 100;
+    private static final int NZEROS = 80;
+    private static final double GAIN = 9.868410946;
+
     private boolean run;
     private boolean audioReady;
     private boolean gettingAudio;
-    private static int VOLUMEBUFFERSIZE = 100;
-    private int volumeBuffer[] = new int[VOLUMEBUFFERSIZE];
+
+    private final int volumeBuffer[] = new int[VOLUMEBUFFERSIZE];
     private int volumeBufferCounter = 0;
-    private static int ISIZE = 256;
-    private byte buffer[] = new byte[ISIZE + 1];
-    private PipedOutputStream ps = new PipedOutputStream();
-    private DataOutputStream outPipe = new DataOutputStream(ps);
-    private AudioMixer audioMixer;
+
+    private final byte buffer[] = new byte[ISIZE + 1];
+    
+    private final PipedOutputStream ps = new PipedOutputStream();
+    private final DataOutputStream outPipe = new DataOutputStream(ps);
+    
+    private final AudioMixer audioMixer;
 
     // Filter details ..
     // filtertype	 =	 Raised Cosine
@@ -28,12 +35,11 @@ public class AudioInThread implements Runnable {
     // comp	 =	 no
     // bits	 =
     // logmin	 =
-    private static int NZEROS = 80;
-    private double xv[] = new double[NZEROS + 1];
+
+    private final double xv[] = new double[NZEROS + 1];
     private int xvCounter = 0;
-    // 0.2 //
-    private static double GAIN = 9.868410946e+00;
-    private static double XCOEFFS[]
+
+    private static final double XCOEFFS[]
             = {+0.0273676736, +0.0190682959, +0.0070661879, -0.0075385898,
                 -0.0231737159, -0.0379433607, -0.0498333862, -0.0569528373,
                 -0.0577853377, -0.0514204905, -0.0377352004, -0.0174982391,
@@ -63,7 +69,7 @@ public class AudioInThread implements Runnable {
         setupAudio();
     }
 
-    // Main
+    @Override
     public void run() {
         // Run continiously
         for (;;) {
@@ -160,7 +166,7 @@ public class AudioInThread implements Runnable {
                 xvShadow = 0;
             }
         }
-        // All done
+
         return (int) sum;
     }
 
@@ -175,13 +181,13 @@ public class AudioInThread implements Runnable {
 
     // Return the average volume over the last VOLUMEBUFFERSIZE samples
     public int returnVolumeAverage() {
-        long va = 0;
-        int a, volumeAverage = 0;
-        for (a = 0; a < VOLUMEBUFFERSIZE; a++) {
+        long va = 0L;
+        
+        for (int a = 0; a < VOLUMEBUFFERSIZE; a++) {
             va = va + Math.abs(volumeBuffer[a]);
         }
-        volumeAverage = (int) va / VOLUMEBUFFERSIZE;
-        return volumeAverage;
+        
+        return (int) va / VOLUMEBUFFERSIZE;
     }
 
     // Return the PipedOutputSteam object so it can be connected to
