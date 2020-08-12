@@ -29,20 +29,20 @@ Where you see the systems color code (actually a number between 0 and 15) and wh
 
 Embedded frame. These frames don't contain any synchronisation bits but instead carry embedded signalling in its place (which isn't currently decoded) they also contain either voice or signalling data in their main payload. The signalling data variety contain a SLOT TYPE section which is decoded (see point 2) while the voice variety contains a EMB field which is decoded as shown below ..
 
-**EMB : Colour Code 2 : First fragment of LC **
+#### EMB : Colour Code 2 : First fragment of LC
 
 Again we see the systems color code and what type of information is contained in the embedded field (in this case the first fragment of an LC).
 
 In between each frame of data DMR systems transmit a short 24 bit burst called the CACH which the program decodes. Each CACH contains a 7 bit section known as the TACT which says what kind of data is seen in the rest of the CACH as seen below ..
 
-**CACH : TACT AT=1 Ch 1 Last fragment of LC **
+#### CACH : TACT AT=1 Ch 1 Last fragment of LC
 
 This shows the CACH was sent in timeslot 1 (DMR is a 2 slot TDMA system) and that the rest of the data is the last fragment of an LC. The data sent in every four CACHs is added together and forms what is known as a SHORT LC. Most kinds of SHORT LC are decoded by the program and look like this ..
 
-** Short LC : Act_Updt - Slot 1 Active with Voice Group Call Hashed Addr 149 & Slot 2 Not Active **
+#### Short LC : Act_Updt - Slot 1 Active with Voice Group Call Hashed Addr 149 & Slot 2 Not Active
 
 This example tells us that slot 1 us active with a voice group call which has a shortened address of 149 while slot 2 is inactive. You may also see SHORT LCs that look like this ..
 
-** Short LC : Unknown SLCO=15 000100000000011100000000 **
+#### Short LC : Unknown SLCO=15 000100000000011100000000
 
 These none standard Short LC messages are believed to be sent by Motorola's Capacity Plus DMR systems.
