@@ -1,11 +1,11 @@
 #### DMRDecode - DMR Radio Protocol Decoder
-Original Java program written by Ian Wraith, and I have imported that into Netbeans and produced this Repository with the executable JAR file.
+Original Java program written by Ian Wraith, and I have imported that into Netbeans 8 and produced this Java SE 8 Repository with an executable JAR file.
+```
+java -jar DMRDecode.jar
+```
+The aim of the project was to provide a user friendly DMR data decoder for hobbyists. It is Java based so should run under Windows, Apple, or Linux PC's. The only hardware needed is a radio scanner with an FM discriminator output.
 
-The aim of the project is to provide a user friendly DMR data decoder for hobbyists.
-
-It is Java based so should run under Microsoft Windows, Apple and Linux PC's. The only hardware needed will be a radio scanner with a discriminator audio output.
-
-The core of the program is based around the open source DSD program. That program was written in C and ran under Linux only, so it was converted to Java and sections removed that didn't relate to DMR.
+The core of the program was based around the open source DSD program. That program was written in C and ran under Linux only, so it was converted to Java and sections removed that didn't relate to DMR.
 
 #### Networking
 The program listens for connections on TCP/IP Port 17887. When a client connects (this can be simulated with the command "telnet 127.0.0.1 17887") the program responds with "OK". Up to 10 clients can be connected.
